@@ -1,0 +1,52 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "indent": ["error", 2],
+    "linebreak-style": ["error", "unix"],
+    "no-mixed-spaces-and-tabs": "error",
+    "no-multi-spaces": "error",
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "no-console": "error",
+    "arrow-spacing": ["error", { "before": true, "after": true }],
+    "object-curly-spacing": ["error", "always"],
+    "no-var": "error",
+    "func-style": ["error", "declaration", { "allowArrowFunctions": true }],
+    "consistent-return": "error",
+    "no-unused-vars": "error",
+    "no-undef": "error",
+    "prefer-const": "error",
+    "no-else-return": "error",
+    "no-prototype-builtins": "error",
+    "no-magic-numbers": [
+      "error",
+      { "ignore": [0, 1], "ignoreArrayIndexes": true }
+    ],
+    "no-duplicate-imports": "error",
+    "prefer-template": "error",
+    "eqeqeq": "error",
+    "no-eval": "error"
+  }
+}
