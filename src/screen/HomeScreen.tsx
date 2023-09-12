@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { FC, useEffect } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { FC, useEffect, useState } from 'react';
+import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
 import { RootStackParamList } from '../types/RootStackParamList';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { actions as photosAction } from '../features/photos/photosSlice';
@@ -17,18 +17,40 @@ type HomeScreenProps = {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 export const HomeScreen: FC<HomeScreenProps> = ({ route, navigation }) => {
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const dispatch = useAppDispatch();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  const { photos, error, loading } = useAppSelector((state) => state.photos);
+  const { photos } = useAppSelector((state) => state.photos);
 
-  const handlePhotoPress = (item: Photo) => {
-    navigation.navigate('Photo', { item });
+  const handlePhotoPress = (photo: Photo) => {
+    navigation.navigate('Photo', { photo });
   };
 
   const fetchedPhotos = async () => {
-    // const result = await getPhotos();
-    // dispatch(photosAction.add(result.data));
-    dispatch(photosAction.add(jsonData as Photo[]));
+    try {
+      dispatch(photosAction.setLoading(true));
+      dispatch(photosAction.clear());
+
+      // const result = await getPhotos();
+      // dispatch(photosAction.add(result.data));
+
+      dispatch(photosAction.add(jsonData as Photo[]));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(photosAction.setError(error.message));
+      }
+
+      dispatch(photosAction.setLoading(false));
+    } finally {
+      dispatch(photosAction.setLoading(false));
+    }
+  };
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+
+    fetchedPhotos();
+
+    setIsRefreshing(false);
   };
 
   useEffect(() => {
@@ -43,12 +65,13 @@ export const HomeScreen: FC<HomeScreenProps> = ({ route, navigation }) => {
         keyExtractor={(photo) => photo.id}
         data={photos}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => handlePhotoPress(item)}>
-            <PhotoItem photo={item} />
-          </TouchableOpacity>
+          <PhotoItem photo={item} onPress={() => handlePhotoPress(item)} />
         )}
         // onEndReached={handleEndReached}
         onEndReachedThreshold={0.8}
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
+        }
       />
     </View>
   );

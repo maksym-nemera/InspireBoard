@@ -1,26 +1,29 @@
 import { FC, memo } from 'react';
 import { Photo } from '../../types/Photo';
-import { StyleSheet, View, Image, Text } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 
 interface PhotoItemProps {
   photo: Photo;
+  onPress: () => void;
 }
 
-export const PhotoItem: FC<PhotoItemProps> = memo(({ photo }) => {
+export const PhotoItem: FC<PhotoItemProps> = memo(({ photo, onPress }) => {
   return (
-    <View style={styles.photoCard}>
-      <Image source={{ uri: photo.urls.small }} style={styles.photoImage} />
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.photoCard}>
+        <Image source={{ uri: photo.urls.small }} style={styles.photoImage} />
 
-      <View style={styles.photoTextContainer}>
-        <Text style={styles.photoCreatedBy}>By: {photo.user.name}</Text>
+        <View style={styles.photoTextContainer}>
+          <Text style={styles.photoCreatedBy}>By: {photo.user.name}</Text>
 
-        {photo.description ? (
-          <Text>{photo.description}</Text>
-        ) : (
-          <Text>{photo.alt_description}</Text>
-        )}
+          {photo.description ? (
+            <Text>{photo.description}</Text>
+          ) : (
+            <Text>{photo.alt_description}</Text>
+          )}
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 });
 
