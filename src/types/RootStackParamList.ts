@@ -1,4 +1,9 @@
+import { Photo } from './Photo';
+
 export type RootStackParamList = {
   Home: undefined;
-  Counter: { text: string };
+  Photo: { item: Photo };
+  Footer: undefined;
+  Search: undefined;
+  Profile: undefined;
 };

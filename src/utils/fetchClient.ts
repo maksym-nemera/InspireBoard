@@ -1,8 +1,12 @@
 import axios from 'axios';
+import { BASE_URL, ACCESS_KEY } from '@env';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://example.com/api',
-  headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+  baseURL: BASE_URL,
+  headers: {
+    'Content-Type': 'application/json; charset=UTF-8',
+    Authorization: `Client-ID ${ACCESS_KEY}`,
+  },
 });
 
 const get = (url: string) => {

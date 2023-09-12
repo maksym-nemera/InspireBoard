@@ -1,7 +1,7 @@
 import { client } from '../utils/fetchClient';
 
-export const getExample = (id: number) => {
-  return client.get(`/example?id=${id}`);
+export const getPhotos = () => {
+  return client.get('/photos');
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
