@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { BASE_URL, ACCESS_KEY } from '@env';
 
 const axiosInstance = axios.create({
@@ -9,20 +9,38 @@ const axiosInstance = axios.create({
   },
 });
 
-const get = (url: string) => {
-  return axiosInstance.get(url);
+const request = async <T>(
+  requestFunction: () => Promise<AxiosResponse<T>>,
+): Promise<T> => {
+  try {
+    const response: AxiosResponse<T> = await requestFunction();
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+
+      throw axiosError;
+    } else {
+      throw error;
+    }
+  }
+};
+
+const get = <T>(url: string) => {
+  return request<T>(() => axiosInstance.get(url));
 };
 
 const post = <T>(url: string, data: T) => {
-  return axiosInstance.post(url, data);
+  return request<T>(() => axiosInstance.post(url, data));
 };
 
 const put = <T>(url: string, data: T) => {
-  return axiosInstance.put(url, data);
+  return request<T>(() => axiosInstance.put(url, data));
 };
 
-const remove = (url: string) => {
-  return axiosInstance.delete(url);
+const remove = <T>(url: string) => {
+  return request<T>(() => axiosInstance.delete(url));
 };
 
 export const client = {
