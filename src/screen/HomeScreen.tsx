@@ -1,25 +1,32 @@
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { FC, useEffect, useState } from 'react';
-import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { RootStackParamList } from '../types/RootStackParamList';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { actions as photosAction } from '../features/photos/photosSlice';
 import { Photo } from '../types/Photo';
 // import { getPhotos } from '../api/photos';
 import jsonData from '../../data.json';
-import { PhotoItem } from '../components/PhotoItem/PhotoItem';
+import { PhotoList } from '../components/PhotoList';
+import { Loader } from '../components/Loader';
 
-type HomeScreenProps = {
+const wait = (delay: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay);
+  });
+};
+
+interface HomeScreenProps {
   route: RouteProp<RootStackParamList, 'Home'>;
   navigation: StackNavigationProp<RootStackParamList, 'Home'>;
-};
+}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 export const HomeScreen: FC<HomeScreenProps> = ({ route, navigation }) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const dispatch = useAppDispatch();
-  const { photos } = useAppSelector((state) => state.photos);
+  const { photos, loading } = useAppSelector((state) => state.photos);
 
   const handlePhotoPress = (photo: Photo) => {
     navigation.navigate('Photo', { photo });
@@ -33,7 +40,10 @@ export const HomeScreen: FC<HomeScreenProps> = ({ route, navigation }) => {
       // const result = await getPhotos();
       // dispatch(photosAction.add(result.data));
 
-      dispatch(photosAction.add(jsonData as Photo[]));
+      // eslint-disable-next-line no-magic-numbers
+      await wait(500).then(() =>
+        dispatch(photosAction.add(jsonData as Photo[])),
+      );
     } catch (error) {
       if (error instanceof Error) {
         dispatch(photosAction.setError(error.message));
@@ -61,18 +71,16 @@ export const HomeScreen: FC<HomeScreenProps> = ({ route, navigation }) => {
     <View style={[styles.container]}>
       <View style={styles.borderShadow}></View>
 
-      <FlatList
-        keyExtractor={(photo) => photo.id}
-        data={photos}
-        renderItem={({ item }) => (
-          <PhotoItem photo={item} onPress={() => handlePhotoPress(item)} />
-        )}
-        // onEndReached={handleEndReached}
-        onEndReachedThreshold={0.8}
-        refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
-        }
-      />
+      {loading && !photos.length ? (
+        <Loader />
+      ) : (
+        <PhotoList
+          photos={photos}
+          onRefresh={handleRefresh}
+          onItemPress={handlePhotoPress}
+          isRefreshing={isRefreshing}
+        />
+      )}
     </View>
   );
 };

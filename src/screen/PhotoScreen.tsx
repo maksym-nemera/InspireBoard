@@ -1,28 +1,16 @@
 import { FC } from 'react';
-import {
-  View,
-  StyleSheet,
-  Image,
-  Dimensions,
-  ActivityIndicator,
-  Text,
-} from 'react-native';
+import { View, StyleSheet, Image, Dimensions, Text } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../types/RootStackParamList';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { actions as photosAction } from '../features/photos/photosSlice';
+import { Loader } from '../components/Loader';
 
-type PhotoScreenProps = {
+interface PhotoScreenProps {
   route: RouteProp<RootStackParamList, 'Photo'>;
-  navigation: StackNavigationProp<RootStackParamList, 'Photo'>;
-};
+}
 
-export const PhotoScreen: FC<PhotoScreenProps> = ({
-  route,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  navigation,
-}) => {
+export const PhotoScreen: FC<PhotoScreenProps> = ({ route }) => {
   const { photo } = route.params;
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.photos);
@@ -47,11 +35,7 @@ export const PhotoScreen: FC<PhotoScreenProps> = ({
 
       <Text>{photo.user.name}</Text>
 
-      {loading && (
-        <View style={styles.loaderContainer}>
-          <ActivityIndicator size='large' color='pink' />
-        </View>
-      )}
+      {loading && <Loader />}
     </View>
   );
 };
@@ -72,10 +56,5 @@ const styles = StyleSheet.create({
     height: imageHeight,
     marginBottom: 10,
     borderRadius: 10,
-  },
-  loaderContainer: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });

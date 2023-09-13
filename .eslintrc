@@ -38,7 +38,7 @@
     "no-var": "error",
     "func-style": ["error", "declaration", { "allowArrowFunctions": true }],
     "consistent-return": "error",
-    "no-unused-vars": "error",
+    "no-unused-vars": "off",
     "no-undef": "error",
     "prefer-const": "error",
     "no-else-return": "error",
