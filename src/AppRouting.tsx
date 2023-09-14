@@ -25,7 +25,9 @@ export const AppRouting = () => {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName='Footer'
-        screenOptions={{ headerShown: false }}
+        screenOptions={{
+          headerShown: false,
+        }}
       >
         <Stack.Screen name='Home' component={HomeScreen} />
         <Stack.Screen

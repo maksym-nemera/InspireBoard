@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { RootStackParamList } from '../types/RootStackParamList';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
@@ -11,7 +11,7 @@ import jsonData from '../../data.json';
 import { PhotoList } from '../components/PhotoList';
 import { Loader } from '../components/Loader';
 
-const wait = (delay: number) => {
+export const wait = (delay: number) => {
   return new Promise((resolve) => {
     setTimeout(resolve, delay);
   });
@@ -24,9 +24,10 @@ interface HomeScreenProps {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 export const HomeScreen: FC<HomeScreenProps> = ({ route, navigation }) => {
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const dispatch = useAppDispatch();
-  const { photos, loading } = useAppSelector((state) => state.photos);
+  const { photos, loading, isRefreshing } = useAppSelector(
+    (state) => state.photos,
+  );
 
   const handlePhotoPress = (photo: Photo) => {
     navigation.navigate('Photo', { photo });
@@ -56,11 +57,11 @@ export const HomeScreen: FC<HomeScreenProps> = ({ route, navigation }) => {
   };
 
   const handleRefresh = () => {
-    setIsRefreshing(true);
+    dispatch(photosAction.setIsRefreshing(true));
 
     fetchedPhotos();
 
-    setIsRefreshing(false);
+    dispatch(photosAction.setIsRefreshing(false));
   };
 
   useEffect(() => {

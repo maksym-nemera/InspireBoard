@@ -5,12 +5,14 @@ import { RootState } from '../../app/store';
 interface PhotosState {
   photos: Photo[];
   loading: boolean;
+  isRefreshing: boolean;
   error: string;
 }
 
 const initialState: PhotosState = {
   photos: [],
   loading: false,
+  isRefreshing: false,
   error: '',
 };
 
@@ -18,6 +20,9 @@ export const photosSlice = createSlice({
   name: 'photos',
   initialState,
   reducers: {
+    setIsRefreshing: (state, action: PayloadAction<boolean>) => {
+      state.isRefreshing = action.payload;
+    },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
