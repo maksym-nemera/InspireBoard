@@ -9,6 +9,7 @@ interface ProfileScreenProps {
 
 export const ProfileScreen: FC<ProfileScreenProps> = ({ route }) => {
   const { user } = route.params;
+
   return (
     <View>
       {!user ? (

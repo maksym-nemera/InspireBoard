@@ -20,7 +20,6 @@ interface HomeScreenProps {
   navigation: StackNavigationProp<RootStackParamList, 'Home'>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
   const { photos, loading, isRefreshing } = useAppSelector(

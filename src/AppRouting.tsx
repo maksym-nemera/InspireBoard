@@ -12,7 +12,17 @@ const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
 
 const HomeStackScreen = () => (
-  <Stack.Navigator>
+  <Stack.Navigator
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: '#FAD0C9',
+      },
+      headerTintColor: '#6E6E6D',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    }}
+  >
     <Stack.Screen name='Home' component={HomeScreen} />
     <Stack.Screen name='Photo' component={PhotoScreen} />
     <Stack.Screen name='Profile' component={ProfileScreen} />
@@ -20,7 +30,17 @@ const HomeStackScreen = () => (
 );
 
 const SearchStackScreen = () => (
-  <Stack.Navigator>
+  <Stack.Navigator
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: '#FAD0C9',
+      },
+      headerTintColor: '#6E6E6D',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    }}
+  >
     <Stack.Screen name='Search' component={SearchScreen} />
   </Stack.Navigator>
 );
@@ -66,7 +86,17 @@ const ProfileStackScreen = () => {
   };
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#FAD0C9',
+        },
+        headerTintColor: '#6E6E6D',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}
+    >
       <Stack.Screen
         name='Profile'
         component={ProfileScreen}
