@@ -36,7 +36,7 @@ interface UserSocial {
   paypal_email: string | null;
 }
 
-interface User {
+export interface User {
   id: string;
   updated_at: string;
   username: string;

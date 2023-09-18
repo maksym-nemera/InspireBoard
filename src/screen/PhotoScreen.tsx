@@ -10,12 +10,15 @@ import {
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../types/RootStackParamList';
 import { Loader } from '../components/Loader';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { User } from '../types/Photo';
 
 interface PhotoScreenProps {
   route: RouteProp<RootStackParamList, 'Photo'>;
+  navigation: StackNavigationProp<RootStackParamList, 'Photo'>;
 }
 
-export const PhotoScreen: FC<PhotoScreenProps> = ({ route }) => {
+export const PhotoScreen: FC<PhotoScreenProps> = ({ route, navigation }) => {
   const { photo } = route.params;
 
   const [isLoadingImage, setIsLoadingImage] = useState(true);
@@ -26,6 +29,10 @@ export const PhotoScreen: FC<PhotoScreenProps> = ({ route }) => {
 
   const handleLoadEnd = () => {
     setIsLoadingImage(false);
+  };
+
+  const handleUserImagePress = (user: User) => {
+    navigation.navigate('Profile', { user });
   };
 
   const scrollViewRef = useRef(null);
@@ -49,7 +56,7 @@ export const PhotoScreen: FC<PhotoScreenProps> = ({ route }) => {
         </View>
 
         <View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => handleUserImagePress(photo.user)}>
             <Image
               source={{ uri: photo.user.profile_image.medium }}
               style={[styles.userImage]}
@@ -60,7 +67,6 @@ export const PhotoScreen: FC<PhotoScreenProps> = ({ route }) => {
           <Text>{`Total photos: ${photo.user.total_photos}`}</Text>
           <Text>{`Total collections: ${photo.user.total_collections}`}</Text>
           <Text>{photo.user.username}</Text>
-
           <Text>{photo.user.bio}</Text>
         </View>
       </ScrollView>

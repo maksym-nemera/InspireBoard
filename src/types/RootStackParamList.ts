@@ -1,11 +1,12 @@
-import { Photo } from './Photo';
+import { Photo, User } from './Photo';
 
 export type RootStackParamList = {
   Home: undefined;
   Photo: {
     photo: Photo;
   };
-  Footer: undefined;
   Search: undefined;
-  Profile: undefined;
+  Profile: {
+    user: User | null;
+  };
 };

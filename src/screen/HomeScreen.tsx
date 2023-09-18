@@ -1,4 +1,3 @@
-import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { FC, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
@@ -18,12 +17,11 @@ export const wait = (delay: number) => {
 };
 
 interface HomeScreenProps {
-  route: RouteProp<RootStackParamList, 'Home'>;
   navigation: StackNavigationProp<RootStackParamList, 'Home'>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-export const HomeScreen: FC<HomeScreenProps> = ({ route, navigation }) => {
+export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
   const { photos, loading, isRefreshing } = useAppSelector(
     (state) => state.photos,
