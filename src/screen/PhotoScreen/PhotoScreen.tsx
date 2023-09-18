@@ -8,10 +8,10 @@ import {
   ScrollView,
 } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../types/RootStackParamList';
-import { Loader } from '../components/Loader';
+import { RootStackParamList } from '../../types/RootStackParamList';
+import { Loader } from '../../components/Loader';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { User } from '../types/Photo';
+import { User } from '../../types/Photo';
 
 interface PhotoScreenProps {
   route: RouteProp<RootStackParamList, 'Photo'>;

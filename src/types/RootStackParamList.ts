@@ -6,6 +6,8 @@ export type RootStackParamList = {
     photo: Photo;
   };
   Search: undefined;
+  Notification: undefined;
+  Menu: undefined;
   Profile: {
     user: User | null;
   };

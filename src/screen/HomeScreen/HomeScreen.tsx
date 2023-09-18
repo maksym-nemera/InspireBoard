@@ -1,14 +1,14 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { FC, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { RootStackParamList } from '../types/RootStackParamList';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { actions as photosAction } from '../features/photos/photosSlice';
-import { Photo } from '../types/Photo';
+import { RootStackParamList } from '../../types/RootStackParamList';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as photosAction } from '../../features/photos/photosSlice';
+import { Photo } from '../../types/Photo';
 // import { getPhotos } from '../api/photos';
-import jsonData from '../../data.json';
-import { PhotoList } from '../components/PhotoList';
-import { Loader } from '../components/Loader';
+import jsonData from '../../../data.json';
+import { PhotoList } from '../../components/PhotoList';
+import { Loader } from '../../components/Loader';
 
 export const wait = (delay: number) => {
   return new Promise((resolve) => {

@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native';
 import { FC } from 'react';
 import { Text, View } from 'react-native';
-import { RootStackParamList } from '../types/RootStackParamList';
+import { RootStackParamList } from '../../types/RootStackParamList';
 
 interface ProfileScreenProps {
   route: RouteProp<RootStackParamList, 'Profile'>;

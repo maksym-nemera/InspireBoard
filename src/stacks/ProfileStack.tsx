@@ -1,51 +1,11 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HomeScreen } from './screen/HomeScreen';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
-import { PhotoScreen } from './screen/PhotoScreen';
-import { RootStackParamList } from './types/RootStackParamList';
-import { SearchScreen } from './screen/SearchScreen';
-import { ProfileScreen } from './screen/ProfileScreen';
-import { User } from './types/Photo';
+import { RootStackParamList } from '../types/RootStackParamList';
+import { User } from '../types/Photo';
+import { ProfileScreen } from '../screen/ProfileScreen/ProfileScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
-const Tab = createBottomTabNavigator();
 
-const HomeStackScreen = () => (
-  <Stack.Navigator
-    screenOptions={{
-      headerStyle: {
-        backgroundColor: '#FAD0C9',
-      },
-      headerTintColor: '#6E6E6D',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
-    }}
-  >
-    <Stack.Screen name='Home' component={HomeScreen} />
-    <Stack.Screen name='Photo' component={PhotoScreen} />
-    <Stack.Screen name='Profile' component={ProfileScreen} />
-  </Stack.Navigator>
-);
-
-const SearchStackScreen = () => (
-  <Stack.Navigator
-    screenOptions={{
-      headerStyle: {
-        backgroundColor: '#FAD0C9',
-      },
-      headerTintColor: '#6E6E6D',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
-    }}
-  >
-    <Stack.Screen name='Search' component={SearchScreen} />
-  </Stack.Navigator>
-);
-
-const ProfileStackScreen = () => {
+export const ProfileStackScreen = () => {
   const user: User = {
     id: '1',
     updated_at: '2023-09-18T12:00:00Z',
@@ -103,17 +63,5 @@ const ProfileStackScreen = () => {
         initialParams={{ user }}
       />
     </Stack.Navigator>
-  );
-};
-
-export const AppRouting = () => {
-  return (
-    <NavigationContainer>
-      <Tab.Navigator screenOptions={{ headerShown: false }}>
-        <Tab.Screen name='GO Home' component={HomeStackScreen} />
-        <Tab.Screen name='GO Search' component={SearchStackScreen} />
-        <Tab.Screen name='GO Profile' component={ProfileStackScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
   );
 };

@@ -1,11 +1,11 @@
 import { Provider } from 'react-redux';
-import { AppRouting } from './AppRouting';
 import store from './app/store';
+import { DrawerNavigation } from './drawers/DrawerNavigation';
 
 export const MainApp = () => {
   return (
     <Provider store={store}>
-      <AppRouting />
+      <DrawerNavigation />
     </Provider>
   );
 };
