@@ -1,10 +1,22 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { FC } from 'react';
+import {
+  StackNavigationProp,
+  createStackNavigator,
+} from '@react-navigation/stack';
 import { RootStackParamList } from '../types/RootStackParamList';
 import { SearchScreen } from '../screen/SearchScreen/SearchScreen';
+import { NotificationIcon } from '../components/NotificationIcon';
+import { MenuIcon } from '../components/MenuIcon';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-export const SearchStackScreen = () => (
+interface SearchStackScreenProps {
+  navigation: StackNavigationProp<RootStackParamList>;
+}
+
+export const SearchStackScreen: FC<SearchStackScreenProps> = ({
+  navigation,
+}) => (
   <Stack.Navigator
     screenOptions={{
       headerStyle: {
@@ -14,6 +26,8 @@ export const SearchStackScreen = () => (
       headerTitleStyle: {
         fontWeight: 'bold',
       },
+      headerLeft: () => <MenuIcon navigation={navigation} />,
+      headerRight: () => <NotificationIcon navigation={navigation} />,
     }}
   >
     <Stack.Screen name='Search' component={SearchScreen} />

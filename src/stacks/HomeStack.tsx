@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import {
   StackNavigationProp,
   createStackNavigator,
@@ -6,10 +7,10 @@ import { RootStackParamList } from '../types/RootStackParamList';
 import { HomeScreen } from '../screen/HomeScreen/HomeScreen';
 import { PhotoScreen } from '../screen/PhotoScreen/PhotoScreen';
 import { ProfileScreen } from '../screen/ProfileScreen/ProfileScreen';
-import { MaterialIcons } from '@expo/vector-icons';
-import { FC } from 'react';
+
 import { NotificationScreen } from '../screen/NotificationScreen/NotificationScreen';
-import { DrawerActions } from '@react-navigation/native';
+import { MenuIcon } from '../components/MenuIcon';
+import { NotificationIcon } from '../components/NotificationIcon';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -27,34 +28,14 @@ export const HomeStackScreen: FC<HomeStackScreenProps> = ({ navigation }) => (
       headerTitleStyle: {
         fontWeight: 'bold',
       },
+      headerRight: () => <NotificationIcon navigation={navigation} />,
     }}
   >
     <Stack.Screen
       name='Home'
       component={HomeScreen}
       options={{
-        headerLeft: () => (
-          <MaterialIcons
-            name='menu'
-            size={24}
-            color='black'
-            style={{ marginLeft: 24 }}
-            onPress={() => {
-              navigation.dispatch(DrawerActions.openDrawer());
-            }}
-          />
-        ),
-        headerRight: () => (
-          <MaterialIcons
-            name='notifications'
-            size={24}
-            color='black'
-            style={{ marginRight: 24 }}
-            onPress={() => {
-              navigation.navigate('Notification');
-            }}
-          />
-        ),
+        headerLeft: () => <MenuIcon navigation={navigation} />,
       }}
     />
     <Stack.Screen name='Photo' component={PhotoScreen} />

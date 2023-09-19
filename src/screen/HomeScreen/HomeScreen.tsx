@@ -1,5 +1,5 @@
-import { StackNavigationProp } from '@react-navigation/stack';
 import { FC, useEffect } from 'react';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { View, StyleSheet } from 'react-native';
 import { RootStackParamList } from '../../types/RootStackParamList';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';

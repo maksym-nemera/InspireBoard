@@ -1,7 +1,7 @@
+import { FC, memo } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { PhotoItem } from '../PhotoItem';
 import { Photo } from '../../types/Photo';
-import { FC, memo } from 'react';
 
 interface PhotoListProps {
   photos: Photo[];

@@ -1,7 +1,7 @@
-import React from 'react';
+import { FC } from 'react';
 import { Text, View } from 'react-native';
 
-export const SearchScreen = () => {
+export const SearchScreen: FC = () => {
   return (
     <View>
       <Text>Search</Text>

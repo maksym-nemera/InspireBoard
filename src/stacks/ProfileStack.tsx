@@ -1,11 +1,23 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { FC } from 'react';
+import {
+  StackNavigationProp,
+  createStackNavigator,
+} from '@react-navigation/stack';
 import { RootStackParamList } from '../types/RootStackParamList';
 import { User } from '../types/Photo';
 import { ProfileScreen } from '../screen/ProfileScreen/ProfileScreen';
+import { MenuIcon } from '../components/MenuIcon';
+import { NotificationIcon } from '../components/NotificationIcon';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-export const ProfileStackScreen = () => {
+interface ProfileStackScreenProps {
+  navigation: StackNavigationProp<RootStackParamList>;
+}
+
+export const ProfileStackScreen: FC<ProfileStackScreenProps> = ({
+  navigation,
+}) => {
   const user: User = {
     id: '1',
     updated_at: '2023-09-18T12:00:00Z',
@@ -55,6 +67,8 @@ export const ProfileStackScreen = () => {
         headerTitleStyle: {
           fontWeight: 'bold',
         },
+        headerLeft: () => <MenuIcon navigation={navigation} />,
+        headerRight: () => <NotificationIcon navigation={navigation} />,
       }}
     >
       <Stack.Screen

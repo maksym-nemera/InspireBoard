@@ -7,8 +7,8 @@ export type RootStackParamList = {
   };
   Search: undefined;
   Notification: undefined;
-  Menu: undefined;
   Profile: {
     user: User | null;
   };
+  Settings: undefined;
 };
