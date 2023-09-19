@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeStackScreen } from '../stacks/HomeStack';
 import { SearchStackScreen } from '../stacks/SearchStack';
 import { ProfileStackScreen } from '../stacks/ProfileStack';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,8 +18,12 @@ export const TabNavigator: FC = () => (
       name='GO Home'
       component={HomeStackScreen}
       options={{
-        tabBarIcon: ({ size, color }) => (
-          <MaterialIcons name='home' size={size} color={color} />
+        tabBarIcon: ({ focused, size, color }) => (
+          <MaterialCommunityIcons
+            name={focused ? 'home' : 'home-outline'}
+            size={size}
+            color={color}
+          />
         ),
       }}
     />
@@ -36,8 +40,12 @@ export const TabNavigator: FC = () => (
       name='GO Profile'
       component={ProfileStackScreen}
       options={{
-        tabBarIcon: ({ size, color }) => (
-          <MaterialIcons name='person' size={size} color={color} />
+        tabBarIcon: ({ focused, size, color }) => (
+          <MaterialIcons
+            name={focused ? 'person' : 'person-outline'}
+            size={size}
+            color={color}
+          />
         ),
       }}
     />

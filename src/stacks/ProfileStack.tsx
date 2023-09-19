@@ -60,13 +60,6 @@ export const ProfileStackScreen: FC<ProfileStackScreenProps> = ({
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: {
-          backgroundColor: '#FAD0C9',
-        },
-        headerTintColor: '#6E6E6D',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
         headerLeft: () => <MenuIcon navigation={navigation} />,
         headerRight: () => <NotificationIcon navigation={navigation} />,
       }}

@@ -7,14 +7,16 @@ interface NotificationIconProps {
   navigation: StackNavigationProp<RootStackParamList>;
 }
 
-export const NotificationIcon: FC<NotificationIconProps> = ({ navigation }) => (
-  <MaterialIcons
-    name='notifications'
-    size={24}
-    color='black'
-    style={{ marginRight: 24 }}
-    onPress={() => {
-      navigation.navigate('Notification');
-    }}
-  />
-);
+export const NotificationIcon: FC<NotificationIconProps> = ({ navigation }) => {
+  return (
+    <MaterialIcons
+      name='notifications-none'
+      size={24}
+      color='black'
+      style={{ marginRight: 24 }}
+      onPress={() => {
+        navigation.navigate('Notification');
+      }}
+    />
+  );
+};

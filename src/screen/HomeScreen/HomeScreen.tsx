@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { RootStackParamList } from '../../types/RootStackParamList';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as photosAction } from '../../features/photos/photosSlice';
@@ -66,9 +66,7 @@ export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={[styles.container]}>
-      <View style={styles.borderShadow}></View>
-
+    <View>
       {loading && !photos.length ? (
         <Loader />
       ) : (
@@ -82,26 +80,3 @@ export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'stretch',
-    borderColor: 'transparent',
-    borderBottomWidth: 8,
-    borderBottomColor: '#D8BFD8',
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  borderShadow: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: -1,
-    backgroundColor: 'rgba(216, 191, 216, 0.7)',
-    backdropFilter: 'blur(10px)',
-  },
-});

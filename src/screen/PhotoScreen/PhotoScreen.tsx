@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
   photoCard: {
     marginBottom: 20,
-    backgroundColor: '#E6CCE6',
+    // backgroundColor: '#E6CCE6',
   },
   photoImage: {
     alignSelf: 'center',

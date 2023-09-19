@@ -15,9 +15,14 @@ export const PhotoList: FC<PhotoListProps> = memo(
     return (
       <FlatList
         data={photos}
+        numColumns={2}
         keyExtractor={(photo) => photo.id}
         renderItem={({ item }) => (
-          <PhotoItem photo={item} onPress={() => onItemPress(item)} />
+          <PhotoItem
+            photo={item}
+            onPress={() => onItemPress(item)}
+            isTall={item.width > item.height}
+          />
         )}
         // onEndReached={handleEndReached}
         onEndReachedThreshold={0.8}

@@ -45,7 +45,7 @@
     "no-prototype-builtins": "error",
     "no-magic-numbers": [
       "error",
-      { "ignore": [0, 1], "ignoreArrayIndexes": true }
+      { "ignore": [0, 1, 2], "ignoreArrayIndexes": true }
     ],
     "no-duplicate-imports": "error",
     "prefer-template": "error",

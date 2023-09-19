@@ -6,17 +6,7 @@ import { RootStackParamList } from '../types/RootStackParamList';
 const Stack = createStackNavigator<RootStackParamList>();
 
 export const SettingStackScreen: FC = () => (
-  <Stack.Navigator
-    screenOptions={{
-      headerStyle: {
-        backgroundColor: '#FAD0C9',
-      },
-      headerTintColor: '#6E6E6D',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
-    }}
-  >
+  <Stack.Navigator>
     <Stack.Screen name='Settings' component={SettingScreen} />
   </Stack.Navigator>
 );

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { DrawerActions } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/RootStackParamList';
@@ -9,7 +9,7 @@ interface MenuIconProps {
 }
 
 export const MenuIcon: FC<MenuIconProps> = ({ navigation }) => (
-  <MaterialIcons
+  <MaterialCommunityIcons
     name='menu'
     size={24}
     color='black'
