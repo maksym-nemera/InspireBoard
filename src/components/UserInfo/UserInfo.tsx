@@ -3,11 +3,8 @@ import { TouchableOpacity, Image, Text, View, StyleSheet } from 'react-native';
 import { Photo, User } from '../../types/Photo';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/RootStackParamList';
-import {
-  Entypo,
-  MaterialIcons,
-  MaterialCommunityIcons,
-} from '@expo/vector-icons';
+import { LocationIcon } from '../LocationIcon';
+import { IconRow } from '../IconRow/IconRow';
 
 interface UserInfoProps {
   navigation: StackNavigationProp<RootStackParamList, 'Photo'>;
@@ -20,92 +17,53 @@ export const UserInfo: FC<UserInfoProps> = ({ navigation, photo }) => {
   };
 
   return (
-    <TouchableOpacity
-      onPress={() => handleUserImagePress(photo.user)}
-      style={styles.userContainer}
-    >
-      <Image
-        source={{ uri: photo.user.profile_image.medium }}
-        style={styles.userImage}
-      />
-      <View style={styles.userInfo}>
-        <Text style={styles.userName}>{photo.user.username}</Text>
+    <View style={styles.userInfo}>
+      <View style={styles.userInfoContainer}>
+        <TouchableOpacity
+          onPress={() => handleUserImagePress(photo.user)}
+          style={styles.userInfoContainerImage}
+        >
+          <Image
+            source={{ uri: photo.user.profile_image.medium }}
+            style={styles.userInfoImage}
+          />
+        </TouchableOpacity>
 
-        <View style={styles.infoRow}>
-          <View style={styles.infoItem}>
-            <MaterialCommunityIcons
-              name='account-heart'
-              size={24}
-              color='black'
-            />
+        <View style={styles.userInfoContainerIcons}>
+          <Text style={styles.userInfoUsername}>{photo.user.username}</Text>
 
-            <Text>{photo.user.total_likes}</Text>
-          </View>
-
-          <View style={styles.infoItem}>
-            <Entypo name='image' size={24} color='black' />
-
-            <Text>{photo.user.total_photos}</Text>
-          </View>
-
-          <View style={styles.infoItem}>
-            <MaterialIcons name='collections' size={24} color='black' />
-
-            <Text>{photo.user.total_collections}</Text>
-          </View>
-
-          {photo.user.location && (
-            <View style={styles.infoItem}>
-              <MaterialIcons name='location-on' size={24} color='black' />
-
-              <Text>{photo.user.location}</Text>
-            </View>
-          )}
-
-          {!photo.user.location && (
-            <View style={styles.infoItem}>
-              <MaterialIcons
-                name='not-listed-location'
-                size={24}
-                color='black'
-              />
-
-              <Text>Not Found</Text>
-            </View>
-          )}
+          <IconRow photo={photo} />
         </View>
       </View>
-    </TouchableOpacity>
+
+      <LocationIcon userLocation={photo.user.location} />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  userContainer: {
+  userInfo: {
+    marginHorizontal: 5,
+  },
+  userInfoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userInfoContainerImage: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     paddingVertical: 10,
   },
-  userImage: {
-    width: 60,
-    height: 60,
+  userInfoImage: {
+    width: 50,
+    height: 50,
     borderRadius: 12,
   },
-  userName: {
-    fontSize: 20,
-  },
-  userInfo: {
+  userInfoContainerIcons: {
     marginLeft: 10,
     flex: 1,
   },
-  infoRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 5,
-  },
-  infoItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 10,
-    marginBottom: 5,
+  userInfoUsername: {
+    fontSize: 20,
   },
 });

@@ -1,14 +1,12 @@
 import { FC, useEffect } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
-// import { View } from 'react-native';
 import { RootStackParamList } from '../../types/RootStackParamList';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
 import { actions as photosAction } from '../../features/photos/photosSlice';
 import { Photo } from '../../types/Photo';
 // import { getPhotos } from '../api/photos';
 import jsonData from '../../../data.json';
 import { PhotoList } from '../../components/PhotoList';
-// import { Loader } from '../../components/Loader';
 
 export const wait = (delay: number) => {
   return new Promise((resolve) => {
@@ -22,8 +20,6 @@ interface HomeScreenProps {
 
 export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { photos, loading } = useAppSelector((state) => state.photos);
 
   const handlePhotoPress = (photo: Photo) => {
     navigation.navigate('Photo', { photo });
@@ -62,13 +58,5 @@ export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
     fetchedPhotos();
   }, []);
 
-  return (
-    // <View>
-    //   {loading && !photos.length ? (
-    //     <Loader />
-    //   ) : (
-    <PhotoList onRefresh={handleRefresh} onItemPress={handlePhotoPress} />
-    //   )}
-    // </View>
-  );
+  return <PhotoList onRefresh={handleRefresh} onItemPress={handlePhotoPress} />;
 };

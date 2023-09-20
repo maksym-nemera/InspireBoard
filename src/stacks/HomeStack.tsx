@@ -31,7 +31,13 @@ export const HomeStackScreen: FC<HomeStackScreenProps> = ({ navigation }) => {
           headerLeft: () => <MenuIcon navigation={navigation} />,
         }}
       />
-      <Stack.Screen name='Photo' component={PhotoScreen} />
+      <Stack.Screen
+        name='Photo'
+        component={PhotoScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen name='Profile' component={ProfileScreen} />
       <Stack.Screen name='Notification' component={NotificationScreen} />
     </Stack.Navigator>
