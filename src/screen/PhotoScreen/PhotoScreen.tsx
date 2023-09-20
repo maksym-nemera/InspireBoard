@@ -3,15 +3,18 @@ import {
   View,
   StyleSheet,
   Image,
-  TouchableOpacity,
   Text,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../types/RootStackParamList';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Loader } from '../../components/Loader';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { User } from '../../types/Photo';
+import { UserInfo } from '../../components/UserInfo';
+import { FontAwesome } from '@expo/vector-icons';
+import { formatLikesCount } from '../../utils/utils';
 
 interface PhotoScreenProps {
   route: RouteProp<RootStackParamList, 'Photo'>;
@@ -20,8 +23,25 @@ interface PhotoScreenProps {
 
 export const PhotoScreen: FC<PhotoScreenProps> = ({ route, navigation }) => {
   const { photo } = route.params;
+  const aspectRatio = photo.width / photo.height;
 
+  // console.log(photo.created_at);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoadingImage, setIsLoadingImage] = useState(true);
+  const [isLikedPhoto, setIsLikedPhoto] = useState(false);
+  const [lastTap, setLastTap] = useState(0);
+
+  const handleTap = () => {
+    const now = new Date().getTime();
+    const DOUBLE_PRESS_DELAY = 300;
+
+    if (now - lastTap < DOUBLE_PRESS_DELAY) {
+      setIsLikedPhoto(!isLikedPhoto);
+    }
+
+    setLastTap(now);
+  };
 
   const handleLoadStart = () => {
     setIsLoadingImage(true);
@@ -31,8 +51,8 @@ export const PhotoScreen: FC<PhotoScreenProps> = ({ route, navigation }) => {
     setIsLoadingImage(false);
   };
 
-  const handleUserImagePress = (user: User) => {
-    navigation.navigate('Profile', { user });
+  const handleDoubleTap = () => {
+    setIsLikedPhoto(!isLikedPhoto);
   };
 
   const scrollViewRef = useRef(null);
@@ -46,63 +66,64 @@ export const PhotoScreen: FC<PhotoScreenProps> = ({ route, navigation }) => {
         scrollEnabled={true}
       >
         <View style={styles.photoCard}>
-          <Image
-            source={{ uri: photo.urls.full }}
-            style={[styles.photoImage]}
-            resizeMode='contain'
-            onLoadStart={handleLoadStart}
-            onLoadEnd={handleLoadEnd}
-          />
-        </View>
-
-        <View>
-          <TouchableOpacity onPress={() => handleUserImagePress(photo.user)}>
+          <TouchableOpacity onPress={handleTap} activeOpacity={2}>
             <Image
-              source={{ uri: photo.user.profile_image.medium }}
-              style={[styles.userImage]}
+              source={{ uri: photo.urls.full }}
+              style={[styles.photoImage, { aspectRatio }]}
+              resizeMode='contain'
+              onLoadStart={handleLoadStart}
+              onLoadEnd={handleLoadEnd}
             />
           </TouchableOpacity>
 
-          <Text>{`Likes: ${photo.likes}`}</Text>
-          <Text>{`Total photos: ${photo.user.total_photos}`}</Text>
-          <Text>{`Total collections: ${photo.user.total_collections}`}</Text>
-          <Text>{photo.user.username}</Text>
-          <Text>{photo.user.bio}</Text>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginHorizontal: 10,
+            }}
+          >
+            <TouchableOpacity onPress={handleDoubleTap} style={{ width: 45 }}>
+              <FontAwesome
+                name={isLikedPhoto ? 'heart' : 'heart-o'}
+                size={30}
+                color={isLikedPhoto ? 'red' : 'black'}
+              />
+            </TouchableOpacity>
+            <Text style={{ fontSize: 20 }}>
+              {formatLikesCount(photo.likes)}
+            </Text>
+          </View>
         </View>
+
+        <UserInfo navigation={navigation} photo={photo} />
       </ScrollView>
 
-      {isLoadingImage && <Loader />}
+      {/* {isLoadingImage && <Loader />} */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    marginHorizontal: 5,
+    marginVertical: 5,
+    height: '100%',
   },
   photoCard: {
     marginBottom: 20,
-    // backgroundColor: '#E6CCE6',
   },
   photoImage: {
     alignSelf: 'center',
     width: '100%',
-    height: 500,
+    marginBottom: 5,
   },
-  loaderContainer: {
-    position: 'absolute',
-    top: 100,
-    left: 100,
-    zIndex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  loaderContainer: {},
   userImage: {
     width: 40,
     height: 40,
     borderRadius: 50,
   },
-  scrollContent: {
-    paddingBottom: 100,
-  },
+  scrollContent: {},
 });

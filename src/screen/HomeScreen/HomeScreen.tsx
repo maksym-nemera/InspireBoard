@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { View } from 'react-native';
+// import { View } from 'react-native';
 import { RootStackParamList } from '../../types/RootStackParamList';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as photosAction } from '../../features/photos/photosSlice';
@@ -8,7 +8,7 @@ import { Photo } from '../../types/Photo';
 // import { getPhotos } from '../api/photos';
 import jsonData from '../../../data.json';
 import { PhotoList } from '../../components/PhotoList';
-import { Loader } from '../../components/Loader';
+// import { Loader } from '../../components/Loader';
 
 export const wait = (delay: number) => {
   return new Promise((resolve) => {
@@ -22,9 +22,8 @@ interface HomeScreenProps {
 
 export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
-  const { photos, loading, isRefreshing } = useAppSelector(
-    (state) => state.photos,
-  );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { photos, loading } = useAppSelector((state) => state.photos);
 
   const handlePhotoPress = (photo: Photo) => {
     navigation.navigate('Photo', { photo });
@@ -39,7 +38,7 @@ export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
       // dispatch(photosAction.add(result.data));
 
       // eslint-disable-next-line no-magic-numbers
-      await wait(500).then(() =>
+      await wait(1000).then(() =>
         dispatch(photosAction.add(jsonData as Photo[])),
       );
     } catch (error) {
@@ -53,11 +52,9 @@ export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
     }
   };
 
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     dispatch(photosAction.setIsRefreshing(true));
-
-    fetchedPhotos();
-
+    await fetchedPhotos();
     dispatch(photosAction.setIsRefreshing(false));
   };
 
@@ -66,17 +63,12 @@ export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
   }, []);
 
   return (
-    <View>
-      {loading && !photos.length ? (
-        <Loader />
-      ) : (
-        <PhotoList
-          photos={photos}
-          onRefresh={handleRefresh}
-          onItemPress={handlePhotoPress}
-          isRefreshing={isRefreshing}
-        />
-      )}
-    </View>
+    // <View>
+    //   {loading && !photos.length ? (
+    //     <Loader />
+    //   ) : (
+    <PhotoList onRefresh={handleRefresh} onItemPress={handlePhotoPress} />
+    //   )}
+    // </View>
   );
 };
