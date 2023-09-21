@@ -1,8 +1,8 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { Text, View } from 'react-native';
 import { ModalIsNotReady } from '../../components/ModalIsNotReady';
 
-export const NotificationScreen: FC = () => {
+export const NotificationScreen: FC = memo(() => {
   return (
     <View>
       <Text>Notifications</Text>
@@ -10,4 +10,4 @@ export const NotificationScreen: FC = () => {
       <ModalIsNotReady modalText={'Notification is not ready right now!'} />
     </View>
   );
-};
+});

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { DrawerActions } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -8,7 +8,7 @@ interface MenuIconProps {
   navigation: StackNavigationProp<RootStackParamList>;
 }
 
-export const MenuIcon: FC<MenuIconProps> = ({ navigation }) => (
+export const MenuIcon: FC<MenuIconProps> = memo(({ navigation }) => (
   <MaterialCommunityIcons
     name='menu'
     size={24}
@@ -18,4 +18,4 @@ export const MenuIcon: FC<MenuIconProps> = ({ navigation }) => (
       navigation.dispatch(DrawerActions.openDrawer());
     }}
   />
-);
+));

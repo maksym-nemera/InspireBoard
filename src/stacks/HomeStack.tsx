@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import {
   StackNavigationProp,
   createStackNavigator,
@@ -17,8 +17,8 @@ interface HomeStackScreenProps {
   navigation: StackNavigationProp<RootStackParamList>;
 }
 
-export const HomeStackScreen: FC<HomeStackScreenProps> = ({ navigation }) => {
-  return (
+export const HomeStackScreen: FC<HomeStackScreenProps> = memo(
+  ({ navigation }) => (
     <Stack.Navigator
       screenOptions={{
         headerRight: () => <NotificationIcon navigation={navigation} />,
@@ -41,5 +41,5 @@ export const HomeStackScreen: FC<HomeStackScreenProps> = ({ navigation }) => {
       <Stack.Screen name='Profile' component={ProfileScreen} />
       <Stack.Screen name='Notification' component={NotificationScreen} />
     </Stack.Navigator>
-  );
-};
+  ),
+);

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -6,7 +6,7 @@ interface LocationIconProps {
   userLocation: string | null;
 }
 
-export const LocationIcon: FC<LocationIconProps> = ({ userLocation }) => (
+export const LocationIcon: FC<LocationIconProps> = memo(({ userLocation }) => (
   <View style={styles.locationIcon}>
     <MaterialIcons
       name={userLocation ? 'location-on' : 'not-listed-location'}
@@ -16,7 +16,7 @@ export const LocationIcon: FC<LocationIconProps> = ({ userLocation }) => (
 
     <Text>{userLocation || 'Not Found'}</Text>
   </View>
-);
+));
 
 const styles = StyleSheet.create({
   locationIcon: {

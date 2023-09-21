@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { Text, View } from 'react-native';
 import { RootStackParamList } from '../../types/RootStackParamList';
@@ -8,7 +8,7 @@ interface ProfileScreenProps {
   route: RouteProp<RootStackParamList, 'Profile'>;
 }
 
-export const ProfileScreen: FC<ProfileScreenProps> = ({ route }) => {
+export const ProfileScreen: FC<ProfileScreenProps> = memo(({ route }) => {
   const { user } = route.params;
 
   return (
@@ -25,4 +25,4 @@ export const ProfileScreen: FC<ProfileScreenProps> = ({ route }) => {
       <ModalIsNotReady modalText={'Profile is not ready right now!'} />
     </View>
   );
-};
+});

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, memo, useMemo, useState } from 'react';
 import {
   TouchableOpacity,
   View,
@@ -16,12 +16,15 @@ interface FullPictureProps {
   photo: Photo;
 }
 
-export const FullPicture: FC<FullPictureProps> = ({ photo }) => {
+export const FullPicture: FC<FullPictureProps> = memo(({ photo }) => {
   const [isLoadingImage, setIsLoadingImage] = useState(false);
   const [isLikedPhoto, setIsLikedPhoto] = useState(false);
   const [lastTap, setLastTap] = useState(0);
 
-  const aspectRatio = photo.width / photo.height;
+  const aspectRatio = useMemo(() => {
+    return photo.width / photo.height;
+  }, [photo.width, photo.height]);
+
   const formattedDate = format(new Date(photo.created_at), 'dd MMM yy');
 
   const handleTap = () => {
@@ -51,7 +54,7 @@ export const FullPicture: FC<FullPictureProps> = ({ photo }) => {
     <View style={styles.fullPicture}>
       <TouchableOpacity onPress={handleTap} activeOpacity={2}>
         <Image
-          source={{ uri: `${photo.urls.raw}&auto=format` }}
+          source={{ uri: photo.urls.full }}
           style={[
             styles.fullPicturePhoto,
             {
@@ -103,7 +106,7 @@ export const FullPicture: FC<FullPictureProps> = ({ photo }) => {
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   fullPicture: {

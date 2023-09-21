@@ -1,31 +1,36 @@
-import { FC, useState } from 'react';
+import { FC, memo, useState } from 'react';
 import { Modal, TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 
 interface ModalIsNotReadyProps {
   modalText: string;
 }
 
-export const ModalIsNotReady: FC<ModalIsNotReadyProps> = ({ modalText }) => {
-  const [isVisible, setIsVisible] = useState(true);
+export const ModalIsNotReady: FC<ModalIsNotReadyProps> = memo(
+  ({ modalText }) => {
+    const [isVisible, setIsVisible] = useState(true);
 
-  const handleOnClose = () => {
-    setIsVisible(false);
-  };
+    const handleOnClose = () => {
+      setIsVisible(false);
+    };
 
-  return (
-    <Modal transparent={true} animationType='slide' visible={isVisible}>
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalText}>{modalText}</Text>
+    return (
+      <Modal transparent={true} animationType='slide' visible={isVisible}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>{modalText}</Text>
 
-          <TouchableOpacity onPress={handleOnClose} style={styles.closeButton}>
-            <Text style={styles.closeButtonText}>Close</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleOnClose}
+              style={styles.closeButton}
+            >
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </Modal>
-  );
-};
+      </Modal>
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   modalContainer: {

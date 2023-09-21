@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { TabNavigator } from '../tabs/TabNavigation';
@@ -6,7 +6,7 @@ import { NavigationTheme } from '../NavigationTheme';
 
 const Drawer = createDrawerNavigator();
 
-export const DrawerMenuNavigation: FC = () => {
+export const DrawerMenuNavigation: FC = memo(() => {
   return (
     <NavigationContainer theme={NavigationTheme}>
       <Drawer.Navigator
@@ -19,4 +19,4 @@ export const DrawerMenuNavigation: FC = () => {
       </Drawer.Navigator>
     </NavigationContainer>
   );
-};
+});

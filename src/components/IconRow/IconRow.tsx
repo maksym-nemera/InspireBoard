@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Photo } from '../../types/Photo';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -7,7 +7,7 @@ interface IconRowProps {
   photo: Photo;
 }
 
-export const IconRow: FC<IconRowProps> = ({ photo }) => (
+export const IconRow: FC<IconRowProps> = memo(({ photo }) => (
   <View style={styles.iconRow}>
     <View style={styles.iconWithText}>
       <MaterialCommunityIcons name='account-heart' size={24} color='black' />
@@ -27,7 +27,7 @@ export const IconRow: FC<IconRowProps> = ({ photo }) => (
       <Text>{photo.user.total_collections}</Text>
     </View>
   </View>
-);
+));
 
 const styles = StyleSheet.create({
   iconRow: {

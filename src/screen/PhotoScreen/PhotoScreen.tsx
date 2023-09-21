@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -26,79 +26,81 @@ interface PhotoScreenProps {
   navigation: StackNavigationProp<RootStackParamList, 'Photo'>;
 }
 
-export const PhotoScreen: FC<PhotoScreenProps> = ({ route, navigation }) => {
-  const { photo } = route.params;
-  const dispatch = useAppDispatch();
+export const PhotoScreen: FC<PhotoScreenProps> = memo(
+  ({ route, navigation }) => {
+    const { photo } = route.params;
+    const dispatch = useAppDispatch();
 
-  const [currentPhotoRandomPhotos, setCurrentPhotoRandomPhotos] = useState<
-    Photo[]
-  >([]);
+    const [currentPhotoRandomPhotos, setCurrentPhotoRandomPhotos] = useState<
+      Photo[]
+    >([]);
 
-  const fetchRecomendedPhotos = async () => {
-    try {
-      dispatch(photosAction.setLoading(true));
-      // const result = await getRandomPhotos(
-      //   photo.description || photo.alt_description,
-      // );
+    const fetchRecomendedPhotos = async () => {
+      try {
+        dispatch(photosAction.setLoading(true));
+        // const result = await getRandomPhotos(
+        //   photo.description || photo.alt_description,
+        // );
 
-      // setCurrentPhotoRandomPhotos(result);
-      // eslint-disable-next-line no-magic-numbers
-      await wait(1000).then(() =>
-        setCurrentPhotoRandomPhotos(jsonData as Photo[]),
-      );
-    } catch (error) {
-      if (error instanceof Error) {
-        dispatch(photosAction.setError('Error with download photos'));
+        // setCurrentPhotoRandomPhotos(result);
+        // eslint-disable-next-line no-magic-numbers
+        await wait(1000).then(() =>
+          setCurrentPhotoRandomPhotos(jsonData as Photo[]),
+        );
+      } catch (error) {
+        if (error instanceof Error) {
+          dispatch(photosAction.setError('Error with download photos'));
+        }
+
+        dispatch(photosAction.setLoading(false));
+      } finally {
+        dispatch(photosAction.setLoading(false));
       }
+    };
 
-      dispatch(photosAction.setLoading(false));
-    } finally {
-      dispatch(photosAction.setLoading(false));
-    }
-  };
+    useEffect(() => {
+      fetchRecomendedPhotos();
+    }, []);
 
-  useEffect(() => {
-    fetchRecomendedPhotos();
-  }, []);
+    const handlePhotoPress = (photo: Photo) => {
+      navigation.push('Photo', { photo });
+    };
 
-  const handlePhotoPress = (photo: Photo) => {
-    navigation.push('Photo', { photo });
-  };
+    return (
+      <SafeAreaView style={{ height: '100%' }}>
+        <View style={styles.backButtonContainer}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons
+              name='ios-chevron-back-sharp'
+              size={26}
+              color={getInvertedColor(photo.color)}
+            />
+          </TouchableOpacity>
+        </View>
 
-  return (
-    <SafeAreaView style={{ height: '100%' }}>
-      <View style={styles.backButtonContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons
-            name='ios-chevron-back-sharp'
-            size={26}
-            color={getInvertedColor(photo.color)}
-          />
-        </TouchableOpacity>
-      </View>
+        <FlatList
+          ListHeaderComponent={() => (
+            <>
+              <FullPicture photo={photo} />
 
-      <FlatList
-        ListHeaderComponent={() => (
-          <>
-            <FullPicture photo={photo} />
-
-            <UserInfo navigation={navigation} photo={photo} />
-          </>
-        )}
-        data={currentPhotoRandomPhotos}
-        numColumns={2}
-        keyExtractor={(photo) => photo.id}
-        renderItem={({ item }) => (
-          <PhotoItem
-            photo={item}
-            onPress={() => handlePhotoPress(item)}
-            isTall={item.width > item.height}
-          />
-        )}
-      />
-    </SafeAreaView>
-  );
-};
+              <UserInfo navigation={navigation} photo={photo} />
+            </>
+          )}
+          data={currentPhotoRandomPhotos}
+          numColumns={2}
+          keyExtractor={(photo) => photo.id}
+          renderItem={({ item }) => (
+            <PhotoItem
+              photo={item}
+              onPress={() => handlePhotoPress(item)}
+              isTall={item.width > item.height}
+            />
+          )}
+        />
+      </SafeAreaView>
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   backButtonContainer: {

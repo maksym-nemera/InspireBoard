@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { TouchableOpacity, Image, Text, View, StyleSheet } from 'react-native';
 import { Photo, User } from '../../types/Photo';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -12,7 +12,7 @@ interface UserInfoProps {
   photo: Photo;
 }
 
-export const UserInfo: FC<UserInfoProps> = ({ navigation, photo }) => {
+export const UserInfo: FC<UserInfoProps> = memo(({ navigation, photo }) => {
   const handleUserImagePress = (user: User) => {
     navigation.navigate('Profile', { user });
   };
@@ -44,7 +44,7 @@ export const UserInfo: FC<UserInfoProps> = ({ navigation, photo }) => {
       )}
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   userInfo: {

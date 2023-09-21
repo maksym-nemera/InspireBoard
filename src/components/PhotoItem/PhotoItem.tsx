@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC, memo, useMemo } from 'react';
 import { Photo } from '../../types/Photo';
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 
@@ -10,9 +10,13 @@ interface PhotoItemProps {
 
 export const PhotoItem: FC<PhotoItemProps> = memo(
   ({ photo, onPress, isTall }) => {
-    const aspectRatio = photo.width / photo.height;
+    const aspectRatio = useMemo(() => {
+      return photo.width / photo.height;
+    }, [photo.width, photo.height]);
 
-    const itemStyle = isTall ? styles.tallItem : styles.shortItem;
+    const itemStyle = useMemo(() => {
+      return isTall ? styles.tallItem : styles.shortItem;
+    }, []);
 
     return (
       <TouchableOpacity onPress={onPress} style={[styles.container, itemStyle]}>

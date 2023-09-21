@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeStackScreen } from '../stacks/HomeStack';
 import { SearchStackScreen } from '../stacks/SearchStack';
@@ -7,7 +7,7 @@ import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
-export const TabNavigator: FC = () => (
+export const TabNavigator: FC = memo(() => (
   <Tab.Navigator
     screenOptions={{
       headerShown: false,
@@ -50,4 +50,4 @@ export const TabNavigator: FC = () => (
       }}
     />
   </Tab.Navigator>
-);
+));

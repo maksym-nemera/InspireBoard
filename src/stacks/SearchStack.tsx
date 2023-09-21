@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import {
   StackNavigationProp,
   createStackNavigator,
@@ -14,15 +14,15 @@ interface SearchStackScreenProps {
   navigation: StackNavigationProp<RootStackParamList>;
 }
 
-export const SearchStackScreen: FC<SearchStackScreenProps> = ({
-  navigation,
-}) => (
-  <Stack.Navigator
-    screenOptions={{
-      headerLeft: () => <MenuIcon navigation={navigation} />,
-      headerRight: () => <NotificationIcon navigation={navigation} />,
-    }}
-  >
-    <Stack.Screen name='Search' component={SearchScreen} />
-  </Stack.Navigator>
+export const SearchStackScreen: FC<SearchStackScreenProps> = memo(
+  ({ navigation }) => (
+    <Stack.Navigator
+      screenOptions={{
+        headerLeft: () => <MenuIcon navigation={navigation} />,
+        headerRight: () => <NotificationIcon navigation={navigation} />,
+      }}
+    >
+      <Stack.Screen name='Search' component={SearchScreen} />
+    </Stack.Navigator>
+  ),
 );
