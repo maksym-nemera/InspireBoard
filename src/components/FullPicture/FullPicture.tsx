@@ -48,17 +48,18 @@ export const FullPicture: FC<FullPictureProps> = ({ photo }) => {
   };
 
   return (
-    <View style={{ marginBottom: 5 }}>
+    <View style={styles.fullPicture}>
       <TouchableOpacity onPress={handleTap} activeOpacity={2}>
         <Image
-          source={{ uri: photo.urls.full }}
+          source={{ uri: photo.urls.raw }}
           style={[
-            { alignSelf: 'center', width: '100%', marginBottom: 5 },
+            styles.fullPicturePhoto,
             {
               aspectRatio,
               backgroundColor: photo.color,
             },
           ]}
+          alt={photo.alt_description}
           resizeMode='contain'
           onLoadStart={handleLoadStart}
           onLoadEnd={handleLoadEnd}
@@ -80,23 +81,12 @@ export const FullPicture: FC<FullPictureProps> = ({ photo }) => {
         )}
       </TouchableOpacity>
 
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginHorizontal: 10,
-        }}
-      >
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
-          <TouchableOpacity onPress={handleDoubleTap} style={{ width: 45 }}>
+      <View style={styles.fullPictureAction}>
+        <View style={styles.fullPictureActionContainer}>
+          <TouchableOpacity
+            onPress={handleDoubleTap}
+            style={styles.fullPictureActionLike}
+          >
             <FontAwesome
               name={isLikedPhoto ? 'heart' : 'heart-o'}
               size={30}
@@ -104,11 +94,42 @@ export const FullPicture: FC<FullPictureProps> = ({ photo }) => {
             />
           </TouchableOpacity>
 
-          <Text style={{ fontSize: 20 }}>{formatLikesCount(photo.likes)}</Text>
+          <Text style={styles.fullPictureActionCount}>
+            {formatLikesCount(photo.likes)}
+          </Text>
         </View>
 
-        <Text>{formattedDate}</Text>
+        <Text style={styles.fullPictureActionCount}>{formattedDate}</Text>
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  fullPicture: {
+    marginBottom: 5,
+  },
+  fullPicturePhoto: {
+    alignSelf: 'center',
+    width: '100%',
+    marginBottom: 5,
+  },
+  fullPictureAction: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginHorizontal: 10,
+  },
+  fullPictureActionContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  fullPictureActionLike: {
+    width: 45,
+  },
+  fullPictureActionCount: {
+    fontSize: 15,
+  },
+});

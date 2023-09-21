@@ -13,6 +13,7 @@ export const LocationIcon: FC<LocationIconProps> = ({ userLocation }) => (
       size={24}
       color='black'
     />
+
     <Text>{userLocation || 'Not Found'}</Text>
   </View>
 );

@@ -5,6 +5,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/RootStackParamList';
 import { LocationIcon } from '../LocationIcon';
 import { IconRow } from '../IconRow/IconRow';
+import { PhotoDescription } from '../PhotoDescription';
 
 interface UserInfoProps {
   navigation: StackNavigationProp<RootStackParamList, 'Photo'>;
@@ -24,7 +25,7 @@ export const UserInfo: FC<UserInfoProps> = ({ navigation, photo }) => {
           style={styles.userInfoContainerImage}
         >
           <Image
-            source={{ uri: photo.user.profile_image.medium }}
+            source={{ uri: photo.user.profile_image.large }}
             style={styles.userInfoImage}
           />
         </TouchableOpacity>
@@ -37,6 +38,10 @@ export const UserInfo: FC<UserInfoProps> = ({ navigation, photo }) => {
       </View>
 
       <LocationIcon userLocation={photo.user.location} />
+
+      {photo.description && (
+        <PhotoDescription description={photo.description} />
+      )}
     </View>
   );
 };

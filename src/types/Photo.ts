@@ -69,7 +69,7 @@ export interface Photo {
   color: string;
   blur_hash: string;
   description: string | null;
-  alt_description: string | null;
+  alt_description: string | undefined;
   urls: Urls;
   links: Links;
   likes: number;
