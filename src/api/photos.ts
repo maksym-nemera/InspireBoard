@@ -1,8 +1,12 @@
 import { Photo } from '../types/Photo';
 import { client } from '../utils/fetchClient';
 
-export const getPhotos = () => {
-  return client.get<Photo[]>('/photos');
+export const getPaginationPhotos = (page: number) => {
+  return client.get<Photo[]>(`/photos?page=${page}`);
+};
+
+export const getRandomPhotos = (altDesc: string = '') => {
+  return client.get<Photo[]>(`/photos/random?count=30&query=${altDesc}`);
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

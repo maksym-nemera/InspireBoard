@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -14,8 +14,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { getInvertedColor } from '../../utils/utils';
 import { FullPicture } from '../../components/FullPicture';
 import { PhotoItem } from '../../components/PhotoItem';
+import { actions as photosAction } from '../../features/photos/photosSlice';
 import { Photo } from '../../types/Photo';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
+// import { getRandomPhotos } from '../../api/photos';
+import { wait } from '../HomeScreen/HomeScreen';
+import jsonData from '../../../data.json';
 
 interface PhotoScreenProps {
   route: RouteProp<RootStackParamList, 'Photo'>;
@@ -24,7 +28,38 @@ interface PhotoScreenProps {
 
 export const PhotoScreen: FC<PhotoScreenProps> = ({ route, navigation }) => {
   const { photo } = route.params;
-  const { photos } = useAppSelector((state) => state.photos);
+  const dispatch = useAppDispatch();
+
+  const [currentPhotoRandomPhotos, setCurrentPhotoRandomPhotos] = useState<
+    Photo[]
+  >([]);
+
+  const fetchRecomendedPhotos = async () => {
+    try {
+      dispatch(photosAction.setLoading(true));
+      // const result = await getRandomPhotos(
+      //   photo.description || photo.alt_description,
+      // );
+
+      // setCurrentPhotoRandomPhotos(result);
+      // eslint-disable-next-line no-magic-numbers
+      await wait(1000).then(() =>
+        setCurrentPhotoRandomPhotos(jsonData as Photo[]),
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(photosAction.setError('Error with download photos'));
+      }
+
+      dispatch(photosAction.setLoading(false));
+    } finally {
+      dispatch(photosAction.setLoading(false));
+    }
+  };
+
+  useEffect(() => {
+    fetchRecomendedPhotos();
+  }, []);
 
   const handlePhotoPress = (photo: Photo) => {
     navigation.push('Photo', { photo });
@@ -50,7 +85,7 @@ export const PhotoScreen: FC<PhotoScreenProps> = ({ route, navigation }) => {
             <UserInfo navigation={navigation} photo={photo} />
           </>
         )}
-        data={photos}
+        data={currentPhotoRandomPhotos}
         numColumns={2}
         keyExtractor={(photo) => photo.id}
         renderItem={({ item }) => (
@@ -60,7 +95,6 @@ export const PhotoScreen: FC<PhotoScreenProps> = ({ route, navigation }) => {
             isTall={item.width > item.height}
           />
         )}
-        onEndReachedThreshold={0.8}
       />
     </SafeAreaView>
   );

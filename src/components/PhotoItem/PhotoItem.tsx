@@ -18,8 +18,15 @@ export const PhotoItem: FC<PhotoItemProps> = memo(
       <TouchableOpacity onPress={onPress} style={[styles.container, itemStyle]}>
         <View style={styles.photoCard}>
           <Image
-            source={{ uri: photo.urls.small }}
-            style={[styles.photoImage, { aspectRatio }]}
+            source={{
+              uri: photo.urls.small,
+            }}
+            style={[
+              styles.photoImage,
+              {
+                aspectRatio,
+              },
+            ]}
           />
         </View>
       </TouchableOpacity>
@@ -42,7 +49,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   photoCard: {
-    flex: 1 / 2,
+    // eslint-disable-next-line no-magic-numbers
+    flex: 1 / 20,
   },
   photoImage: {
     borderRadius: 10,

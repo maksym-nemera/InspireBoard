@@ -51,7 +51,7 @@ export const FullPicture: FC<FullPictureProps> = ({ photo }) => {
     <View style={styles.fullPicture}>
       <TouchableOpacity onPress={handleTap} activeOpacity={2}>
         <Image
-          source={{ uri: photo.urls.raw }}
+          source={{ uri: `${photo.urls.raw}&auto=format` }}
           style={[
             styles.fullPicturePhoto,
             {

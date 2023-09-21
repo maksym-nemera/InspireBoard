@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-ts_template",
-    "slug": "react-native-ts_template",
+    "name": "Insire Board",
+    "slug": "Inspire Board",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

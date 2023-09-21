@@ -1,10 +1,10 @@
-import { FC, useEffect } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/RootStackParamList';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as photosAction } from '../../features/photos/photosSlice';
 import { Photo } from '../../types/Photo';
-// import { getPhotos } from '../api/photos';
+// import { getPaginationPhotos } from '../../api/photos';
 import jsonData from '../../../data.json';
 import { FlatList } from 'react-native';
 import { PhotoItem } from '../../components/PhotoItem';
@@ -19,21 +19,27 @@ interface HomeScreenProps {
   navigation: StackNavigationProp<RootStackParamList, 'Home'>;
 }
 
-export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
+export const HomeScreen: FC<HomeScreenProps> = memo(({ navigation }) => {
   const dispatch = useAppDispatch();
   const { photos, isRefreshing } = useAppSelector((state) => state.photos);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [currentPage, setCurrentPage] = useState(1);
+  // const [loadedPhotosCount, setLoadedPhotosCount] = useState(0);
 
   const handlePhotoPress = (photo: Photo) => {
     navigation.navigate('Photo', { photo });
   };
 
-  const fetchedPhotos = async () => {
+  const fetchPaginationPhotos = async () => {
     try {
       dispatch(photosAction.setLoading(true));
       dispatch(photosAction.clear());
 
-      // const result = await getPhotos();
-      // dispatch(photosAction.add(result.data));
+      // const result = await getPaginationPhotos(currentPage);
+      // dispatch(photosAction.add(result));
+
+      // setLoadedPhotosCount((prevCount) => prevCount + result.length);
+      // setCurrentPage(currentPage + 1);
 
       // eslint-disable-next-line no-magic-numbers
       await wait(1000).then(() =>
@@ -41,7 +47,7 @@ export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
       );
     } catch (error) {
       if (error instanceof Error) {
-        dispatch(photosAction.setError(error.message));
+        dispatch(photosAction.setError('Error with download photos'));
       }
 
       dispatch(photosAction.setLoading(false));
@@ -52,16 +58,23 @@ export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
 
   const handleRefresh = async () => {
     dispatch(photosAction.setIsRefreshing(true));
-    await fetchedPhotos();
+    dispatch(photosAction.clear());
+    setCurrentPage(1);
+    await fetchPaginationPhotos();
     dispatch(photosAction.setIsRefreshing(false));
   };
 
+  // const handleLoadMore = () => {
+  //   fetchPaginationPhotos();
+  // };
+
   useEffect(() => {
-    fetchedPhotos();
+    fetchPaginationPhotos();
   }, []);
 
   return (
     <FlatList
+      // data={photos.slice(0, loadedPhotosCount)}
       data={photos}
       numColumns={2}
       keyExtractor={(photo) => photo.id}
@@ -72,9 +85,10 @@ export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
           isTall={item.width > item.height}
         />
       )}
+      // onEndReached={handleLoadMore}
       onEndReachedThreshold={0.8}
       onRefresh={handleRefresh}
       refreshing={isRefreshing}
     />
   );
-};
+});

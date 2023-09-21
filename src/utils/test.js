@@ -4,6 +4,12 @@ import fs from 'fs';
 
 dotenv.config();
 
+export const wait = (delay) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay);
+  });
+};
+
 const axiosInstance = axios.create({
   baseURL: process.env.BASE_URL,
   headers: {
@@ -24,7 +30,7 @@ const get = (url) => {
 };
 
 const writeToJSONFile = (data) => {
-  const jsonData = JSON.stringify(data); // Перетворюємо дані в рядок JSON
+  const jsonData = JSON.stringify(data);
   fs.writeFile('./data.json', jsonData, (error) => {
     if (error) {
       // eslint-disable-next-line no-console
