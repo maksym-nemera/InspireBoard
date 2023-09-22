@@ -31,7 +31,7 @@ const get = (url) => {
 
 const writeToJSONFile = (data) => {
   const jsonData = JSON.stringify(data);
-  fs.writeFile('./data.json', jsonData, (error) => {
+  fs.writeFile('./collections.json', jsonData, (error) => {
     if (error) {
       // eslint-disable-next-line no-console
       console.error('Помилка під час запису в файл:', error);
@@ -44,7 +44,7 @@ const writeToJSONFile = (data) => {
 
 const fetch = async () => {
   try {
-    const result = await get('/photos');
+    const result = await get('/users/evgenit/collections');
     // eslint-disable-next-line no-console
     console.log('Кількість фотографій:', result.length);
     writeToJSONFile(result);

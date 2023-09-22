@@ -1,10 +1,11 @@
-import { FC, memo, useEffect, useState } from 'react';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
   FlatList,
+  Text,
 } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../types/RootStackParamList';
@@ -16,10 +17,14 @@ import { FullPicture } from '../../components/FullPicture';
 import { PhotoItem } from '../../components/PhotoItem';
 import { actions as photosAction } from '../../features/photos/photosSlice';
 import { Photo } from '../../types/Photo';
-import { useAppDispatch } from '../../app/hooks';
-// import { getRandomPhotos } from '../../api/photos';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { wait } from '../HomeScreen/HomeScreen';
 import jsonData from '../../../data.json';
+import jsonDataCollections from '../../../collections.json';
+import { Collection } from '../../types/Collection';
+import { CollectionItem } from '../../components/CollectionItem';
+// import { getCollections } from '../../api/collections';
+// import { getRandomPhotos } from '../../api/photos';
 
 interface PhotoScreenProps {
   route: RouteProp<RootStackParamList, 'Photo'>;
@@ -29,42 +34,74 @@ interface PhotoScreenProps {
 export const PhotoScreen: FC<PhotoScreenProps> = memo(
   ({ route, navigation }) => {
     const { photo } = route.params;
+
+    const { loading } = useAppSelector((state) => state.photos);
+
     const dispatch = useAppDispatch();
 
-    const [currentPhotoRandomPhotos, setCurrentPhotoRandomPhotos] = useState<
-      Photo[]
-    >([]);
+    const [recommendedPhotos, setRecommendedPhotos] = useState<Photo[]>([]);
+    const [userCollections, setUserCollections] = useState<Collection[]>([]);
 
-    const fetchRecomendedPhotos = async () => {
+    const fetchRecommendedPhotos = useCallback(async () => {
       try {
         dispatch(photosAction.setLoading(true));
-        // const result = await getRandomPhotos(
+        // const getRecommendedPhotos = await getRandomPhotos(
         //   photo.description || photo.alt_description,
         // );
 
-        // setCurrentPhotoRandomPhotos(result);
+        // const getRecommendedPhotos = await getCollections(photo.user.username);
+
+        // setUserCollections(getRecommendedPhotos);
+
         // eslint-disable-next-line no-magic-numbers
-        await wait(1000).then(() =>
-          setCurrentPhotoRandomPhotos(jsonData as Photo[]),
+        await wait(1000).then(
+          () => (
+            setRecommendedPhotos(jsonData as Photo[]),
+            setUserCollections(jsonDataCollections as Collection[])
+          ),
         );
       } catch (error) {
         if (error instanceof Error) {
           dispatch(photosAction.setError('Error with download photos'));
         }
-
-        dispatch(photosAction.setLoading(false));
       } finally {
         dispatch(photosAction.setLoading(false));
       }
-    };
+    }, []);
 
     useEffect(() => {
-      fetchRecomendedPhotos();
-    }, []);
+      fetchRecommendedPhotos();
+    }, [fetchRecommendedPhotos]);
 
     const handlePhotoPress = (photo: Photo) => {
       navigation.push('Photo', { photo });
     };
+
+    const memoizedRecoData = useMemo(
+      () => recommendedPhotos,
+      [recommendedPhotos],
+    );
+
+    const memoizedCollectionsData = useMemo(
+      () => userCollections,
+      [userCollections],
+    );
+
+    const renderRecoItem = useCallback(
+      ({ item }: { item: Photo }) => (
+        <PhotoItem
+          photo={item}
+          onPress={() => handlePhotoPress(item)}
+          isTall={item.width > item.height}
+        />
+      ),
+      [],
+    );
+
+    const renderCollectioneItem = useCallback(
+      ({ item }: { item: Collection }) => <CollectionItem collection={item} />,
+      [],
+    );
 
     return (
       <SafeAreaView style={{ height: '100%' }}>
@@ -84,18 +121,33 @@ export const PhotoScreen: FC<PhotoScreenProps> = memo(
               <FullPicture photo={photo} />
 
               <UserInfo navigation={navigation} photo={photo} />
+
+              {photo.user.total_collections !== 0 && (
+                <View>
+                  <Text style={styles.sectionText}>Collections</Text>
+
+                  {loading ? (
+                    <Text>loading</Text>
+                  ) : (
+                    <FlatList
+                      data={memoizedCollectionsData}
+                      horizontal
+                      renderItem={renderCollectioneItem}
+                      keyExtractor={(_, index) => String(index)}
+                      showsHorizontalScrollIndicator={false}
+                    />
+                  )}
+                </View>
+              )}
+
+              <Text style={styles.sectionText}>Recommended</Text>
             </>
           )}
-          data={currentPhotoRandomPhotos}
+          data={memoizedRecoData}
           numColumns={2}
-          keyExtractor={(photo) => photo.id}
-          renderItem={({ item }) => (
-            <PhotoItem
-              photo={item}
-              onPress={() => handlePhotoPress(item)}
-              isTall={item.width > item.height}
-            />
-          )}
+          keyExtractor={(_, index) => String(index)}
+          renderItem={renderRecoItem}
+          showsVerticalScrollIndicator={false}
         />
       </SafeAreaView>
     );
@@ -108,5 +160,10 @@ const styles = StyleSheet.create({
     top: 55,
     left: 10,
     zIndex: 1,
+  },
+  sectionText: {
+    fontSize: 20,
+    textAlign: 'center',
+    marginVertical: 10,
   },
 });

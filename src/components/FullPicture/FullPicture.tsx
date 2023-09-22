@@ -54,7 +54,7 @@ export const FullPicture: FC<FullPictureProps> = memo(({ photo }) => {
     <View style={styles.fullPicture}>
       <TouchableOpacity onPress={handleTap} activeOpacity={2}>
         <Image
-          source={{ uri: photo.urls.full }}
+          source={{ uri: photo.urls.regular }}
           style={[
             styles.fullPicturePhoto,
             {

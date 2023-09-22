@@ -3,11 +3,11 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Photo } from '../../types/Photo';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-interface IconRowProps {
+interface IconRowInfoUserProps {
   photo: Photo;
 }
 
-export const IconRow: FC<IconRowProps> = memo(({ photo }) => (
+export const IconRowInfoUser: FC<IconRowInfoUserProps> = memo(({ photo }) => (
   <View style={styles.iconRow}>
     <View style={styles.iconWithText}>
       <MaterialCommunityIcons name='account-heart' size={24} color='black' />
@@ -40,6 +40,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    marginBottom: 5,
   },
 });

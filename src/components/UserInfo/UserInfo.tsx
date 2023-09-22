@@ -4,7 +4,7 @@ import { Photo, User } from '../../types/Photo';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/RootStackParamList';
 import { LocationIcon } from '../LocationIcon';
-import { IconRow } from '../IconRow/IconRow';
+import { IconRowInfoUser } from '../IconRowInfoUser/IconRowInfoUser';
 import { PhotoDescription } from '../PhotoDescription';
 
 interface UserInfoProps {
@@ -33,7 +33,7 @@ export const UserInfo: FC<UserInfoProps> = memo(({ navigation, photo }) => {
         <View style={styles.userInfoContainerIcons}>
           <Text style={styles.userInfoUsername}>{photo.user.username}</Text>
 
-          <IconRow photo={photo} />
+          <IconRowInfoUser photo={photo} />
         </View>
       </View>
 

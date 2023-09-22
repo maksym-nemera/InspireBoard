@@ -15,7 +15,7 @@ export const PhotoDescription: FC<PhotoDescriptionProps> = memo(
       setIsDescriptionExpanded(!isDescriptionExpanded);
     };
     return (
-      <View style={styles.userInfoDescription}>
+      <View>
         <Text numberOfLines={isDescriptionExpanded ? 0 : 3}>{description}</Text>
 
         {!isDescriptionExpanded &&
@@ -31,11 +31,10 @@ export const PhotoDescription: FC<PhotoDescriptionProps> = memo(
 );
 
 const styles = StyleSheet.create({
-  userInfoDescription: {
-    marginBottom: 10,
-  },
   seeAllButton: {
     color: 'blue',
-    marginTop: 5,
+    textAlign: 'right',
+    marginTop: 10,
+    marginRight: 10,
   },
 });

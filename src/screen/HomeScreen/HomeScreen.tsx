@@ -35,10 +35,10 @@ export const HomeScreen: FC<HomeScreenProps> = memo(({ navigation }) => {
       dispatch(photosAction.setLoading(true));
       dispatch(photosAction.clear());
 
-      // const result = await getPaginationPhotos(currentPage);
-      // dispatch(photosAction.add(result));
+      // const getPhotos = await getPaginationPhotos(currentPage);
+      // dispatch(photosAction.add(getPhotos));
 
-      // setLoadedPhotosCount((prevCount) => prevCount + result.length);
+      // setLoadedPhotosCount((prevCount) => prevCount + getPhotos.length);
       // setCurrentPage(currentPage + 1);
 
       // eslint-disable-next-line no-magic-numbers
@@ -77,7 +77,7 @@ export const HomeScreen: FC<HomeScreenProps> = memo(({ navigation }) => {
       // data={photos.slice(0, loadedPhotosCount)}
       data={photos}
       numColumns={2}
-      keyExtractor={(photo) => photo.id}
+      keyExtractor={(_, index) => String(index)}
       renderItem={({ item }) => (
         <PhotoItem
           photo={item}
@@ -89,6 +89,7 @@ export const HomeScreen: FC<HomeScreenProps> = memo(({ navigation }) => {
       onEndReachedThreshold={0.8}
       onRefresh={handleRefresh}
       refreshing={isRefreshing}
+      showsVerticalScrollIndicator={false}
     />
   );
 });

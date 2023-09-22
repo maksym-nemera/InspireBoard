@@ -11,8 +11,21 @@ export const formatLikesCount = (likes: number) => {
 };
 
 export const getInvertedColor = (color: string) => {
-  const originalColor = Color(color);
-  const invertedColor = originalColor.negate();
+  const hexColor = Color(color).hex();
 
-  return invertedColor.hex();
+  const r = parseInt(hexColor.slice(1, 3), 16);
+  const g = parseInt(hexColor.slice(3, 5), 16);
+  const b = parseInt(hexColor.slice(5, 7), 16);
+
+  const isLight = (r + g + b) / 3 > 128;
+
+  return isLight ? '#000000' : '#ffffff';
+};
+
+export const hexToRgb = (hex: string) => {
+  const bigint = parseInt(hex.slice(1), 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `${r}, ${g}, ${b}`;
 };
