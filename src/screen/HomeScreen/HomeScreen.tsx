@@ -6,8 +6,9 @@ import { actions as photosAction } from '../../features/photos/photosSlice';
 import { Photo } from '../../types/Photo';
 // import { getPaginationPhotos } from '../../api/photos';
 import jsonData from '../../../data.json';
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { PhotoItem } from '../../components/PhotoItem';
+import { Skeleton } from '../../components/Skeleton';
 
 export const wait = (delay: number) => {
   return new Promise((resolve) => {
@@ -24,7 +25,8 @@ export const HomeScreen: FC<HomeScreenProps> = memo(({ navigation }) => {
   const { photos, isRefreshing } = useAppSelector((state) => state.photos);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentPage, setCurrentPage] = useState(1);
-  // const [loadedPhotosCount, setLoadedPhotosCount] = useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [loadedPhotosCount, setLoadedPhotosCount] = useState(0);
 
   const handlePhotoPress = (photo: Photo) => {
     navigation.navigate('Photo', { photo });
@@ -90,6 +92,24 @@ export const HomeScreen: FC<HomeScreenProps> = memo(({ navigation }) => {
       onRefresh={handleRefresh}
       refreshing={isRefreshing}
       showsVerticalScrollIndicator={false}
+      ListEmptyComponent={() => (
+        <FlatList
+          // eslint-disable-next-line no-magic-numbers
+          data={[1, 2, 3, 4, 5, 6, 7, 8]}
+          numColumns={2}
+          renderItem={() => (
+            <View
+              style={{
+                marginVertical: 5,
+              }}
+            >
+              <Skeleton height={250} />
+            </View>
+          )}
+          keyExtractor={(_, index) => String(index)}
+          showsHorizontalScrollIndicator={false}
+        />
+      )}
     />
   );
 });

@@ -50,13 +50,13 @@ export const PhotoScreen: FC<PhotoScreenProps> = memo(
         // const getRecommendedPhotos = await getRandomPhotos(
         //   photo.description || photo.alt_description,
         // );
+        // const getUserCollections = await getCollections(photo.user.username);
 
-        // const getRecommendedPhotos = await getCollections(photo.user.username);
-
-        // setUserCollections(getRecommendedPhotos);
+        // setRecommendedPhotos(getRecommendedPhotos);
+        // setUserCollections(getUserCollections);
 
         // eslint-disable-next-line no-magic-numbers
-        await wait(300).then(
+        await wait(1000).then(
           () => (
             setRecommendedPhotos(jsonData as Photo[]),
             setUserCollections(jsonDataCollections as Collection[])
