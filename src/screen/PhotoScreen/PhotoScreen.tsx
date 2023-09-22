@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   View,
@@ -23,6 +24,7 @@ import jsonData from '../../../data.json';
 import jsonDataCollections from '../../../collections.json';
 import { Collection } from '../../types/Collection';
 import { CollectionItem } from '../../components/CollectionItem';
+import { Skeleton } from '../../components/Skeleton';
 // import { getCollections } from '../../api/collections';
 // import { getRandomPhotos } from '../../api/photos';
 
@@ -54,7 +56,7 @@ export const PhotoScreen: FC<PhotoScreenProps> = memo(
         // setUserCollections(getRecommendedPhotos);
 
         // eslint-disable-next-line no-magic-numbers
-        await wait(1000).then(
+        await wait(300).then(
           () => (
             setRecommendedPhotos(jsonData as Photo[]),
             setUserCollections(jsonDataCollections as Collection[])
@@ -127,7 +129,15 @@ export const PhotoScreen: FC<PhotoScreenProps> = memo(
                   <Text style={styles.sectionText}>Collections</Text>
 
                   {loading ? (
-                    <Text>loading</Text>
+                    <FlatList
+                      data={[1, 2, 3, 4, 5, 6]}
+                      horizontal
+                      renderItem={() => (
+                        <Skeleton customWidth={200} height={200} />
+                      )}
+                      keyExtractor={(_, index) => String(index)}
+                      showsHorizontalScrollIndicator={false}
+                    />
                   ) : (
                     <FlatList
                       data={memoizedCollectionsData}
@@ -148,6 +158,23 @@ export const PhotoScreen: FC<PhotoScreenProps> = memo(
           keyExtractor={(_, index) => String(index)}
           renderItem={renderRecoItem}
           showsVerticalScrollIndicator={false}
+          ListEmptyComponent={() => (
+            <FlatList
+              data={[1, 2, 3, 4, 5, 6, 7, 8]}
+              numColumns={2}
+              renderItem={() => (
+                <View
+                  style={{
+                    marginVertical: 5,
+                  }}
+                >
+                  <Skeleton height={250} />
+                </View>
+              )}
+              keyExtractor={(_, index) => String(index)}
+              showsHorizontalScrollIndicator={false}
+            />
+          )}
         />
       </SafeAreaView>
     );

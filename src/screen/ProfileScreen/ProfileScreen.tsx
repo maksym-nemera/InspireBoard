@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import { FC, memo } from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { Text, View } from 'react-native';
