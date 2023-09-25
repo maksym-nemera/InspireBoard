@@ -7,6 +7,7 @@ import { RootStackParamList } from '../types/RootStackParamList';
 import { SearchScreen } from '../screen/SearchScreen/SearchScreen';
 import { NotificationIcon } from '../components/NotificationIcon';
 import { MenuIcon } from '../components/MenuIcon';
+import { PhotoScreen } from '../screen/PhotoScreen/PhotoScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -23,6 +24,13 @@ export const SearchStackScreen: FC<SearchStackScreenProps> = memo(
       }}
     >
       <Stack.Screen name='Search' component={SearchScreen} />
+      <Stack.Screen
+        name='Photo'
+        component={PhotoScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   ),
 );

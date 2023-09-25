@@ -19,6 +19,7 @@ import { PhotoItem } from '../../components/PhotoItem';
 import { actions as photosAction } from '../../features/photos/photosSlice';
 import { Photo } from '../../types/Photo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { wait } from '../HomeScreen/HomeScreen';
 import jsonData from '../../../data.json';
 import jsonDataCollections from '../../../collections.json';
@@ -105,10 +106,14 @@ export const PhotoScreen: FC<PhotoScreenProps> = memo(
       [],
     );
 
+    const handleBack = () => {
+      navigation.goBack();
+    };
+
     return (
       <SafeAreaView style={{ height: '100%' }}>
         <View style={styles.backButtonContainer}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={handleBack}>
             <Ionicons
               name='ios-chevron-back-sharp'
               size={26}

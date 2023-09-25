@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     marginHorizontal: 5,
     justifyContent: 'center',
-    alignItems: 'center',
   },
   tallItem: {
     flex: 2.2,
@@ -58,7 +57,5 @@ const styles = StyleSheet.create({
   },
   photoImage: {
     borderRadius: 10,
-    width: '100%',
-    height: '100%',
   },
 });

@@ -31,8 +31,8 @@ const get = <T>(url: string) => {
   return request<T>(() => axiosInstance.get(url));
 };
 
-const post = <T>(url: string, data: T) => {
-  return request<T>(() => axiosInstance.post(url, data));
+const post = <T>(url: string) => {
+  return request<T>(() => axiosInstance.post(url));
 };
 
 const put = <T>(url: string, data: T) => {

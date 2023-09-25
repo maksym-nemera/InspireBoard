@@ -1,21 +1,27 @@
 import { Photo } from '../types/Photo';
+import { SearchPhotos } from '../types/SearchItems';
 import { client } from '../utils/fetchClient';
 
 export const getPaginationPhotos = (page: number) => {
-  return client.get<Photo[]>(`/photos?page=${page}`);
+  return client.get<Photo[]>(`/photos?per_page=30&page=${page}`);
 };
 
 export const getRandomPhotos = (altDesc: string = '') => {
   return client.get<Photo[]>(`/photos/random?count=30&query=${altDesc}`);
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const addExample = (path: string, data: any) => {
-  return client.post<Photo>(path, data);
+export const likePhoto = (id: string) => {
+  return client.post<Photo>(`/photos/${id}/like`);
 };
 
-export const removeExample = (id: number) => {
-  return client.remove<Photo>(`/example/${id}`);
+export const unLikePhoto = (id: string) => {
+  return client.remove<Photo>(`/photos/${id}/like`);
+};
+
+export const searchPhotos = (query: string, page: number) => {
+  return client.get<SearchPhotos>(
+    `/search/photos?per_page=30&page=${page}&query=${query}`,
+  );
 };
 
 export const changeExample = (

@@ -25,9 +25,14 @@ export const FullPicture: FC<FullPictureProps> = memo(({ photo }) => {
     return photo.width / photo.height;
   }, [photo.width, photo.height]);
 
+  const imageSource = useMemo(
+    () => ({ uri: photo.urls.regular }),
+    [photo.urls.regular],
+  );
+
   const formattedDate = format(new Date(photo.created_at), 'dd MMM yy');
 
-  const handleTap = () => {
+  const handleDoubleTap = () => {
     const now = new Date().getTime();
     const DOUBLE_PRESS_DELAY = 300;
 
@@ -38,7 +43,7 @@ export const FullPicture: FC<FullPictureProps> = memo(({ photo }) => {
     setLastTap(now);
   };
 
-  const handleDoubleTap = () => {
+  const handleTap = () => {
     setIsLikedPhoto(!isLikedPhoto);
   };
 
@@ -52,9 +57,9 @@ export const FullPicture: FC<FullPictureProps> = memo(({ photo }) => {
 
   return (
     <View style={styles.fullPicture}>
-      <TouchableOpacity onPress={handleTap} activeOpacity={2}>
+      <TouchableOpacity onPress={handleDoubleTap} activeOpacity={2}>
         <Image
-          source={{ uri: photo.urls.regular }}
+          source={imageSource}
           style={[
             styles.fullPicturePhoto,
             {
@@ -87,7 +92,7 @@ export const FullPicture: FC<FullPictureProps> = memo(({ photo }) => {
       <View style={styles.fullPictureAction}>
         <View style={styles.fullPictureActionContainer}>
           <TouchableOpacity
-            onPress={handleDoubleTap}
+            onPress={handleTap}
             style={styles.fullPictureActionLike}
           >
             <FontAwesome
