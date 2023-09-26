@@ -15,6 +15,11 @@ import { PhotoItem } from '../../components/PhotoItem';
 import { Photo } from '../../types/Photo';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/RootStackParamList';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as photosAction } from '../../features/photos/photosSlice';
+import { Skeleton } from '../../components/Skeleton';
+import { NotFound } from '../../components/NotFound';
+import { SearchPhotos } from '../../types/SearchItems';
 
 interface SearchScreenProps {
   navigation: StackNavigationProp<RootStackParamList, 'Home'>;
@@ -22,11 +27,19 @@ interface SearchScreenProps {
 
 export const SearchScreen: FC<SearchScreenProps> = memo(({ navigation }) => {
   const [searchText, setSearchText] = useState('');
-  const [serchedPhotos, setSerchedPhotos] = useState<Photo[]>([]);
+  const [searchResult, setSearchedResult] = useState<SearchPhotos>({
+    total: 0,
+    total_pages: 0,
+    results: [],
+  });
+  const [isSubmit, setIsSubmit] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [showCancel, setShowCancel] = useState(false);
   const inputRef = useRef<TextInput>(null);
   const inputWidth = useRef(new Animated.Value(100)).current;
+
+  const dispatch = useAppDispatch();
+  const { loading } = useAppSelector((state) => state.photos);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -73,10 +86,6 @@ export const SearchScreen: FC<SearchScreenProps> = memo(({ navigation }) => {
     animateInputWidth(80);
 
     setShowCancel(true);
-
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
   };
 
   const handleInputFocus = () => {
@@ -87,20 +96,39 @@ export const SearchScreen: FC<SearchScreenProps> = memo(({ navigation }) => {
     animateInputWidth(100);
   };
 
+  // eslint-disable-next-line consistent-return
   const handleDonePress = async () => {
-    setCurrentPage(currentPage + 1);
+    try {
+      dispatch(photosAction.setLoading(true));
 
-    const result = await searchPhotos(searchText, currentPage);
-    setSerchedPhotos([]);
-    setSerchedPhotos(result.results);
+      setCurrentPage(currentPage + 1);
 
-    if (inputRef.current) {
-      inputRef.current.blur();
+      const result = await searchPhotos(searchText, currentPage);
+      setSearchedResult({
+        total: 0,
+        total_pages: 0,
+        results: [],
+      });
+      setSearchedResult(result);
+
+      if (inputRef.current) {
+        inputRef.current.blur();
+      }
+
+      animateInputWidth(100);
+
+      setShowCancel(false);
+
+      setIsSubmit(true);
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(photosAction.setError('Error with download photos'));
+      }
+
+      dispatch(photosAction.setLoading(false));
+    } finally {
+      dispatch(photosAction.setLoading(false));
     }
-
-    animateInputWidth(100);
-
-    setShowCancel(false);
   };
 
   const handleLoadMore = async () => {
@@ -108,13 +136,16 @@ export const SearchScreen: FC<SearchScreenProps> = memo(({ navigation }) => {
 
     const result = await searchPhotos(searchText, currentPage);
 
-    setSerchedPhotos((prevState) => {
+    setSearchedResult((prevState) => {
       const uniquePhotos = result.results.filter(
         (newPhoto) =>
-          !prevState.some((prevPhoto) => prevPhoto.id === newPhoto.id),
+          !prevState.results.some((prevPhoto) => prevPhoto.id === newPhoto.id),
       );
 
-      return [...prevState, ...uniquePhotos];
+      return {
+        ...prevState,
+        results: [...prevState.results, ...uniquePhotos],
+      };
     });
   };
 
@@ -141,7 +172,7 @@ export const SearchScreen: FC<SearchScreenProps> = memo(({ navigation }) => {
 
           <TextInput
             ref={inputRef}
-            placeholder='Search photos, collections, users'
+            placeholder='Search photos...'
             value={searchText}
             onChangeText={handleSearchChange}
             style={styles.input}
@@ -174,21 +205,42 @@ export const SearchScreen: FC<SearchScreenProps> = memo(({ navigation }) => {
         )}
       </View>
 
-      <FlatList
-        data={serchedPhotos}
-        numColumns={2}
-        keyExtractor={(_, index) => String(index)}
-        renderItem={({ item }) => (
-          <PhotoItem
-            photo={item}
-            onPress={() => handlePhotoPress(item)}
-            isTall={item.width > item.height}
-          />
-        )}
-        onEndReached={handleLoadMore}
-        onEndReachedThreshold={0.8}
-        showsVerticalScrollIndicator={false}
-      />
+      {loading ? (
+        <FlatList
+          // eslint-disable-next-line no-magic-numbers
+          data={[1, 2, 3, 4, 5, 6, 7, 8]}
+          numColumns={2}
+          renderItem={() => (
+            <View
+              style={{
+                marginVertical: 5,
+              }}
+            >
+              <Skeleton height={250} />
+            </View>
+          )}
+          keyExtractor={(_, index) => String(index)}
+          showsHorizontalScrollIndicator={false}
+        />
+      ) : (
+        <FlatList
+          data={searchResult.results}
+          numColumns={2}
+          keyExtractor={(_, index) => String(index)}
+          renderItem={({ item }) => (
+            <PhotoItem
+              photo={item}
+              onPress={() => handlePhotoPress(item)}
+              isTall={item.width > item.height}
+            />
+          )}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.8}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
+
+      {searchResult.total === 0 && isSubmit && <NotFound />}
     </View>
   );
 });

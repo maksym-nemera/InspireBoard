@@ -20,7 +20,7 @@ export const PhotoItem: FC<PhotoItemProps> = memo(
 
     return (
       <TouchableOpacity onPress={onPress} style={[styles.container, itemStyle]}>
-        <View style={styles.photoCard}>
+        <View>
           <Image
             source={{
               uri: photo.urls.small,
@@ -41,21 +41,17 @@ export const PhotoItem: FC<PhotoItemProps> = memo(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 5,
-    marginHorizontal: 5,
+    marginVertical: 2,
+    marginHorizontal: 2,
     justifyContent: 'center',
   },
   tallItem: {
-    flex: 2.2,
-  },
-  shortItem: {
     flex: 1,
   },
-  photoCard: {
-    // eslint-disable-next-line no-magic-numbers
-    flex: 1 / 20,
+  shortItem: {
+    flex: 1 / 2,
   },
   photoImage: {
-    borderRadius: 10,
+    borderRadius: 5,
   },
 });

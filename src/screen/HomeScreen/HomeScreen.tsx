@@ -80,13 +80,15 @@ export const HomeScreen: FC<HomeScreenProps> = memo(({ navigation }) => {
       data={photos}
       numColumns={2}
       keyExtractor={(_, index) => String(index)}
-      renderItem={({ item }) => (
-        <PhotoItem
-          photo={item}
-          onPress={() => handlePhotoPress(item)}
-          isTall={item.width > item.height}
-        />
-      )}
+      renderItem={({ item }) => {
+        return (
+          <PhotoItem
+            photo={item}
+            onPress={() => handlePhotoPress(item)}
+            isTall={item.height < item.width}
+          />
+        );
+      }}
       // onEndReached={handleLoadMore}
       onEndReachedThreshold={0.8}
       onRefresh={handleRefresh}
