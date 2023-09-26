@@ -58,7 +58,7 @@ export const SearchScreen: FC<SearchScreenProps> = memo(({ navigation }) => {
   }, [inputWidth]);
 
   const handlePhotoPress = (photo: Photo) => {
-    navigation.navigate('Photo', { photo });
+    navigation.push('Photo', { photo });
   };
 
   const handleSearchChange = (text: string) => {

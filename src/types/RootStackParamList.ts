@@ -1,3 +1,4 @@
+import { Collection } from './Collection';
 import { Photo, User } from './Photo';
 
 export type RootStackParamList = {
@@ -9,6 +10,10 @@ export type RootStackParamList = {
   Notification: undefined;
   Profile: {
     user: User | null;
+  };
+  Collection: {
+    collection: Collection;
+    collectionTitle: string;
   };
   Settings: undefined;
 };

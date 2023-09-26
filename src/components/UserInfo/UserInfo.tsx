@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 import { TouchableOpacity, Image, Text, View, StyleSheet } from 'react-native';
-import { Photo, User } from '../../types/Photo';
+import { User } from '../../types/Photo';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/RootStackParamList';
 import { LocationIcon } from '../LocationIcon';
@@ -9,42 +9,43 @@ import { PhotoDescription } from '../PhotoDescription';
 
 interface UserInfoProps {
   navigation: StackNavigationProp<RootStackParamList, 'Photo'>;
-  photo: Photo;
+  user: User;
+  description: string | null;
 }
 
-export const UserInfo: FC<UserInfoProps> = memo(({ navigation, photo }) => {
-  const handleUserImagePress = (user: User) => {
-    navigation.navigate('Profile', { user });
-  };
+export const UserInfo: FC<UserInfoProps> = memo(
+  ({ navigation, user, description }) => {
+    const handleUserImagePress = (user: User) => {
+      navigation.navigate('Profile', { user });
+    };
 
-  return (
-    <View style={styles.userInfo}>
-      <View style={styles.userInfoContainer}>
-        <TouchableOpacity
-          onPress={() => handleUserImagePress(photo.user)}
-          style={styles.userInfoContainerImage}
-        >
-          <Image
-            source={{ uri: photo.user.profile_image.large }}
-            style={styles.userInfoImage}
-          />
-        </TouchableOpacity>
+    return (
+      <View style={styles.userInfo}>
+        <View style={styles.userInfoContainer}>
+          <TouchableOpacity
+            onPress={() => handleUserImagePress(user)}
+            style={styles.userInfoContainerImage}
+          >
+            <Image
+              source={{ uri: user.profile_image.large }}
+              style={styles.userInfoImage}
+            />
+          </TouchableOpacity>
 
-        <View style={styles.userInfoContainerIcons}>
-          <Text style={styles.userInfoUsername}>{photo.user.username}</Text>
+          <View style={styles.userInfoContainerIcons}>
+            <Text style={styles.userInfoUsername}>{user.username}</Text>
 
-          <IconRowInfoUser photo={photo} />
+            <IconRowInfoUser user={user} />
+          </View>
         </View>
+
+        <LocationIcon userLocation={user.location} />
+
+        {description && <PhotoDescription description={description} />}
       </View>
-
-      <LocationIcon userLocation={photo.user.location} />
-
-      {photo.description && (
-        <PhotoDescription description={photo.description} />
-      )}
-    </View>
-  );
-});
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   userInfo: {

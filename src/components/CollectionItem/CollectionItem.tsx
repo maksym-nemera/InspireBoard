@@ -6,15 +6,16 @@ import { hexToRgb } from '../../utils/utils';
 
 interface CollectionItemProps {
   collection: Collection;
+  onPress: () => void;
 }
 
 export const CollectionItem: FC<CollectionItemProps> = memo(
-  ({ collection }) => {
+  ({ collection, onPress }) => {
     const coverColor = collection.cover_photo.color;
     const rgbColor = hexToRgb(coverColor);
 
     return (
-      <TouchableOpacity onPress={() => {}} style={styles.container}>
+      <TouchableOpacity onPress={onPress} style={styles.container}>
         <View style={styles.collectionCard}>
           <Image
             source={{

@@ -1,3 +1,5 @@
+import { Collection } from './Collection';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Urls {
   raw: string;
@@ -42,7 +44,7 @@ export interface User {
   username: string;
   name: string;
   first_name: string;
-  last_name: string;
+  last_name: string | null;
   twitter_username: string | null;
   portfolio_url: string | null;
   bio: string | null;
@@ -74,7 +76,7 @@ export interface Photo {
   links: Links;
   likes: number;
   liked_by_user: boolean;
-  current_user_collections: any[];
+  current_user_collections: Collection[] | [];
   sponsorship: any | null;
   topic_submissions: any;
   user: User;

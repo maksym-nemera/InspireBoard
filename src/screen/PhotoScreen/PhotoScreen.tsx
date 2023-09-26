@@ -80,6 +80,13 @@ export const PhotoScreen: FC<PhotoScreenProps> = memo(
       navigation.push('Photo', { photo });
     };
 
+    const handleCollectionPress = (collection: Collection) => {
+      navigation.navigate('Collection', {
+        collection,
+        collectionTitle: collection.title,
+      });
+    };
+
     const memoizedRecoData = useMemo(
       () => recommendedPhotos,
       [recommendedPhotos],
@@ -102,7 +109,12 @@ export const PhotoScreen: FC<PhotoScreenProps> = memo(
     );
 
     const renderCollectioneItem = useCallback(
-      ({ item }: { item: Collection }) => <CollectionItem collection={item} />,
+      ({ item }: { item: Collection }) => (
+        <CollectionItem
+          collection={item}
+          onPress={() => handleCollectionPress(item)}
+        />
+      ),
       [],
     );
 
@@ -127,7 +139,11 @@ export const PhotoScreen: FC<PhotoScreenProps> = memo(
             <>
               <FullPicture photo={photo} />
 
-              <UserInfo navigation={navigation} photo={photo} />
+              <UserInfo
+                navigation={navigation}
+                user={photo.user}
+                description={photo.description}
+              />
 
               {photo.user.total_collections !== 0 && (
                 <View>

@@ -10,6 +10,7 @@ import { ProfileScreen } from '../screen/ProfileScreen/ProfileScreen';
 import { NotificationScreen } from '../screen/NotificationScreen/NotificationScreen';
 import { NotificationIcon } from '../components/NotificationIcon';
 import { MenuIcon } from '../components/MenuIcon';
+import { CollectionScreen } from '../screen/CollectionScreen/CollectionScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -37,6 +38,13 @@ export const HomeStackScreen: FC<HomeStackScreenProps> = memo(
         options={{
           headerShown: false,
         }}
+      />
+      <Stack.Screen
+        name='Collection'
+        component={CollectionScreen}
+        options={({ route }) => ({
+          headerTitle: route.params.collectionTitle || 'Collection',
+        })}
       />
       <Stack.Screen name='Profile' component={ProfileScreen} />
       <Stack.Screen name='Notification' component={NotificationScreen} />

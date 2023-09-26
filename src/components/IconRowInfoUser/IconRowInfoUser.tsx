@@ -1,30 +1,30 @@
 import { FC, memo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Photo } from '../../types/Photo';
+import { User } from '../../types/Photo';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface IconRowInfoUserProps {
-  photo: Photo;
+  user: User;
 }
 
-export const IconRowInfoUser: FC<IconRowInfoUserProps> = memo(({ photo }) => (
+export const IconRowInfoUser: FC<IconRowInfoUserProps> = memo(({ user }) => (
   <View style={styles.iconRow}>
     <View style={styles.iconWithText}>
       <MaterialCommunityIcons name='account-heart' size={24} color='black' />
 
-      <Text>{photo.user.total_likes}</Text>
+      <Text>{user.total_likes}</Text>
     </View>
 
     <View style={styles.iconWithText}>
       <MaterialIcons name='image' size={24} color='black' />
 
-      <Text>{photo.user.total_photos}</Text>
+      <Text>{user.total_photos}</Text>
     </View>
 
     <View style={styles.iconWithText}>
       <MaterialIcons name='collections' size={24} color='black' />
 
-      <Text>{photo.user.total_collections}</Text>
+      <Text>{user.total_collections}</Text>
     </View>
   </View>
 ));
